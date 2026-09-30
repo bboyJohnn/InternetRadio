@@ -1,0 +1,9 @@
+<resources>
+    <!-- API 27+: разрешаем контенту (баннер-волна) заходить в зону чёлки в портрете. -->
+    <style name="Theme.InternetRadio" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+</resources>

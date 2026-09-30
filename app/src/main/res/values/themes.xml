@@ -1,0 +1,9 @@
+<resources>
+    <!-- Базовая тема (minSdk 26): без windowLayoutInDisplayCutoutMode — атрибут требует API 27,
+         а на API 26 чёлок нет. Рисование под чёлку добавлено в values-v27/themes.xml. -->
+    <style name="Theme.InternetRadio" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+</resources>

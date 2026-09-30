@@ -1,0 +1,25 @@
+Картинки жанров (app/src/main/res/drawable-nodpi/genre_*.jpg)
+Все — CC0 (общественное достояние), найдены через Openverse (openverse.org).
+Указание автора не требуется; источники сохранены для прозрачности.
+Обрезаны до 480x600 и сжаты в JPG (качество 80).
+
+genre_jazz.jpg  CC0  rawpixel  https://images.rawpixel.com/editor_1024/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA0L3Vwd2s2MTY4Nzc1OS13aWtpbWVkaWEtaW1hZ2Uta293cjZ5czUuanBn.jpg
+genre_game.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/6MQCVSOWVZ.jpg
+genre_anime.jpg  CC0  rawpixel  https://images.rawpixel.com/editor_1024/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdXB3azYxNzU0MTQ5LXdpa2ltZWRpYS1pbWFnZS1rb3dsbGVzcy5qcGc.jpg
+genre_rock.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/H80Z9EVEGA.jpg
+genre_pop.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/Q0LOIKU7GM.jpg
+genre_electronic.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/57FZTV75G4.jpg
+genre_hiphop.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/0RN44JI11G.jpg
+genre_classical.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/YZ00UZN69T.jpg
+genre_chillout.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/AMXMQQWNQJ.jpg
+genre_lounge.jpg  CC0  rawpixel  https://images.rawpixel.com/editor_1024/cHJpdmF0ZS9zdGF0aWMvaW1hZ2Uvd2Vic2l0ZS8yMDIyLTA0L2xyL3B4MTA2OTgxMi1pbWFnZS1rd3Z3ZHMxNC5qcGc.jpg
+genre_dance.jpg  CC0  rawpixel  https://images.rawpixel.com/editor_1024/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvZnJsYXNlcl9zaG93X2xhc2VyX3Nob3dfNS1pbWFnZS1reWJkZG1jNi5qcGc.jpg
+genre_eighties.jpg  CC0  rawpixel  https://images.rawpixel.com/editor_1024/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvaXMxNTU5Ni1pbWFnZS1rd3lzY2NubC5qcGc.jpg
+genre_metal.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/45VQJS6717.jpg
+genre_news.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/FT18I6U09O.jpg
+genre_blues.jpg  CC0  rawpixel  https://images.rawpixel.com/editor_1024/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvZnJhY291c3RpY19ndWl0YXJfZ3VpdGFyXzM5MDk2MS1pbWFnZS1reWNpaTJ2MC5qcGc.jpg
+genre_lofi.jpg  CC0  rawpixel  https://images.rawpixel.com/editor_1024/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvaXMxODM5OS1pbWFnZS1rd3lzOHlnOS5qcGc.jpg
+genre_ambient.jpg  CC0  rawpixel  https://images.rawpixel.com/editor_1024/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA2L3Vwd2s2MTc3NzM5OC13aWtpbWVkaWEtaW1hZ2Uta293cWZxMHcuanBn.jpg
+genre_country.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/IUJWYVKFMQ.jpg
+genre_soundtrack.jpg  CC0  rawpixel  https://images.rawpixel.com/editor_1024/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTExL2ZsMTA0Nzk3NTk0NDQtaW1hZ2UuanBn.jpg
+genre_reggae.jpg  CC0  stocksnap  https://cdn.stocksnap.io/img-thumbs/960w/1A05IEU76N.jpg

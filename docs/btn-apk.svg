@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="272" height="56" viewBox="0 0 272 56" role="img" aria-label="Download APK">
+  <rect x=".5" y=".5" width="271" height="55" rx="27.5" fill="#1a2430" stroke="#2c3b4e"/>
+  <circle cx="28" cy="28" r="18" fill="#63abff" fill-opacity=".16"/>
+  <path d="M28 17v15m-6.5-6.5L28 32l6.5-6.5M20 38h16" fill="none" stroke="#63abff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="156" y="35" text-anchor="middle" fill="#e6edf6" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="19" font-weight="700">Download APK</text>
+</svg>

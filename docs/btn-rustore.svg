@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="272" height="56" viewBox="0 0 272 56" role="img" aria-label="Get it on RuStore">
+  <rect width="272" height="56" rx="28" fill="#63abff"/>
+  <circle cx="28" cy="28" r="18" fill="#0d1117" fill-opacity=".14"/>
+  <path d="M23 18.5v19l15-9.5z" fill="#0b1320"/>
+  <text x="156" y="35" text-anchor="middle" fill="#0b1320" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="19" font-weight="700">Get it on RuStore</text>
+</svg>

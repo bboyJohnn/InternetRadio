@@ -219,4 +219,6 @@
     <string name="mood_instrumental">纯音乐</string>
     <string name="mood_sleep">睡前</string>
     <string name="mood_chill">惬意</string>
+    <string name="station_prev">上一个电台</string>
+    <string name="station_next">下一个电台</string>
 </resources>

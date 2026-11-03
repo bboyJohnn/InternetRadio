@@ -219,4 +219,6 @@
     <string name="mood_instrumental">Không lời</string>
     <string name="mood_sleep">Trước khi ngủ</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Đài trước</string>
+    <string name="station_next">Đài tiếp theo</string>
 </resources>

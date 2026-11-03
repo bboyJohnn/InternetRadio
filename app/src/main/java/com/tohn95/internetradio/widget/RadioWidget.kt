@@ -11,6 +11,7 @@ import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.action.ActionParameters
+import androidx.glance.action.actionParametersOf
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.action.ActionCallback
@@ -69,6 +70,14 @@ class RadioWidget : GlanceAppWidget() {
                         modifier = GlanceModifier.defaultWeight(),
                     )
                     Spacer(GlanceModifier.width(8.dp))
+                    // ⏮ ⏭ листают тот же список, что и в приложении (откуда включили станцию).
+                    Image(
+                        provider = ImageProvider(android.R.drawable.ic_media_previous),
+                        contentDescription = context.getString(R.string.station_prev),
+                        modifier = GlanceModifier.size(28.dp)
+                            .clickable(actionRunCallback<SkipAction>(actionParametersOf(SkipAction.Direction to -1))),
+                    )
+                    Spacer(GlanceModifier.width(4.dp))
                     Image(
                         provider = ImageProvider(
                             if (playing) android.R.drawable.ic_media_pause
@@ -77,6 +86,13 @@ class RadioWidget : GlanceAppWidget() {
                         contentDescription = null,
                         modifier = GlanceModifier.size(32.dp)
                             .clickable(actionRunCallback<TogglePlayAction>()),
+                    )
+                    Spacer(GlanceModifier.width(4.dp))
+                    Image(
+                        provider = ImageProvider(android.R.drawable.ic_media_next),
+                        contentDescription = context.getString(R.string.station_next),
+                        modifier = GlanceModifier.size(28.dp)
+                            .clickable(actionRunCallback<SkipAction>(actionParametersOf(SkipAction.Direction to 1))),
                     )
                 }
             }
@@ -100,6 +116,24 @@ class TogglePlayAction : ActionCallback {
                 Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             )
         }
+    }
+}
+
+class SkipAction : ActionCallback {
+    override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
+        val pc = EntryPointAccessors.fromApplication(context, WidgetEntryPoint::class.java).playerController()
+        val direction = parameters[Direction] ?: 1
+        if (pc.currentStation.value != null) {
+            withContext(Dispatchers.Main) { pc.skip(direction) }
+        } else {
+            context.startActivity(
+                Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+        }
+    }
+
+    companion object {
+        val Direction = ActionParameters.Key<Int>("direction")
     }
 }
 

@@ -222,4 +222,6 @@
     <string name="mood_instrumental">Instrumentalna</string>
     <string name="mood_sleep">Do snu</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Poprzednia stacja</string>
+    <string name="station_next">Następna stacja</string>
 </resources>

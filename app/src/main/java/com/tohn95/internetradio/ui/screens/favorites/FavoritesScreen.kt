@@ -58,6 +58,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tohn95.internetradio.R
 import com.tohn95.internetradio.domain.model.Folder
+import com.tohn95.internetradio.playback.PlayQueue
+import com.tohn95.internetradio.playback.PlaySource
 import com.tohn95.internetradio.domain.model.Station
 import com.tohn95.internetradio.playback.PlayerController
 import com.tohn95.internetradio.ui.components.LocalBottomBarInset
@@ -90,7 +92,7 @@ fun FavoritesScreen(
     var openFolderId by rememberSaveable { mutableStateOf<Long?>(null) }
     var dialog by remember { mutableStateOf<FavDialog?>(null) }
     val openFolder = folders.firstOrNull { it.id == openFolderId }
-    val play: (Station) -> Unit = { playerController?.play(it) }
+    val playFavorite: (Station) -> Unit = { playerController?.play(it, PlayQueue(PlaySource.Favorites, favorites)) }
     val currentUuid = rememberCurrentUuid(playerController)
 
     BackHandler(enabled = openFolder != null) { openFolderId = null }
@@ -134,7 +136,7 @@ fun FavoritesScreen(
                 }
                 items(favorites, key = { "s${it.uuid}" }) { s ->
                     FavoriteRow(
-                        s, onPlay = { play(s) },
+                        s, onPlay = { playFavorite(s) },
                         onAddToFolder = { dialog = FavDialog.Pick(s) },
                         onRemoveFavorite = { viewModel.removeFavorite(s) },
                         isCurrent = s.uuid == currentUuid,
@@ -154,7 +156,9 @@ fun FavoritesScreen(
                 }
                 items(openFolder.stations, key = { it.uuid }) { s ->
                     FavoriteRow(
-                        s, onPlay = { play(s) },
+                        s, onPlay = {
+                            playerController?.play(s, PlayQueue(PlaySource.Folder(openFolder.id, openFolder.name), openFolder.stations))
+                        },
                         onAddToFolder = { dialog = FavDialog.Pick(s) },
                         onRemoveFromFolder = { viewModel.removeFromFolder(openFolder.id, s) },
                         onRemoveFavorite = { viewModel.removeFavorite(s) },

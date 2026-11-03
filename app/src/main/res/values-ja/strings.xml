@@ -219,4 +219,6 @@
     <string name="mood_instrumental">インスト</string>
     <string name="mood_sleep">おやすみ前に</string>
     <string name="mood_chill">チル</string>
+    <string name="station_prev">前の局</string>
+    <string name="station_next">次の局</string>
 </resources>

@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tohn95.internetradio.playback.PlayQueue
 import com.tohn95.internetradio.R
 import com.tohn95.internetradio.playback.PlayerController
 import com.tohn95.internetradio.ui.components.CatalogError
@@ -61,6 +62,7 @@ fun StationListScreen(
 ) {
     val palette = LocalPalette.current
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val source = viewModel.source
     val sort by viewModel.sort.collectAsStateWithLifecycle()
     val query by viewModel.query.collectAsStateWithLifecycle()
     val currentUuid = rememberCurrentUuid(playerController)
@@ -131,7 +133,7 @@ fun StationListScreen(
                     itemsIndexed(state.stations, key = { _, s -> s.uuid }) { index, s ->
                         if (index == state.stations.lastIndex) LaunchedEffect(state.stations.size) { viewModel.loadMore() }
                         StationCard(
-                            s, onClick = { playerController?.play(s) },
+                            s, onClick = { playerController?.play(s, PlayQueue(source, state.stations)) },
                             isCurrent = s.uuid == currentUuid,
                             showListeners = true,
                         )

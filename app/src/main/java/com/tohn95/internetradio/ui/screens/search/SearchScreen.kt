@@ -61,6 +61,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tohn95.internetradio.R
 import com.tohn95.internetradio.util.countryDisplayName
 import com.tohn95.internetradio.playback.PlayerController
+import com.tohn95.internetradio.playback.PlayQueue
+import com.tohn95.internetradio.playback.PlaySource
 import com.tohn95.internetradio.ui.components.CatalogError
 import com.tohn95.internetradio.ui.components.FilterCapsule
 import com.tohn95.internetradio.ui.components.LocalBottomBarInset
@@ -184,7 +186,7 @@ fun SearchScreen(
             results.isNotEmpty() -> itemsIndexed(results, key = { _, s -> s.uuid }) { index, s ->
                 if (index == results.lastIndex) LaunchedEffect(results.size) { viewModel.loadMore() }
                 StationCard(
-                    s, onClick = { playerController?.play(s) },
+                    s, onClick = { playerController?.play(s, PlayQueue(PlaySource.Search(query.trim()), results)) },
                     isCurrent = s.uuid == currentUuid,
                     showListeners = true,
                 )

@@ -224,4 +224,6 @@
     <string name="mood_instrumental">موسيقى آلية</string>
     <string name="mood_sleep">قبل النوم</string>
     <string name="mood_chill">هدوء</string>
+    <string name="station_prev">المحطة السابقة</string>
+    <string name="station_next">المحطة التالية</string>
 </resources>

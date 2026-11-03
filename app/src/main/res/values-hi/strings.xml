@@ -220,4 +220,6 @@
     <string name="mood_instrumental">वाद्य संगीत</string>
     <string name="mood_sleep">सोने से पहले</string>
     <string name="mood_chill">चिल</string>
+    <string name="station_prev">पिछला स्टेशन</string>
+    <string name="station_next">अगला स्टेशन</string>
 </resources>

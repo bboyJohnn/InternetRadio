@@ -220,4 +220,6 @@
     <string name="mood_instrumental">Instrumental</string>
     <string name="mood_sleep">Zum Einschlafen</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Vorheriger Sender</string>
+    <string name="station_next">Nächster Sender</string>
 </resources>

@@ -219,4 +219,6 @@
     <string name="mood_instrumental">Instrumental</string>
     <string name="mood_sleep">Pengantar tidur</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Stasiun sebelumnya</string>
+    <string name="station_next">Stasiun berikutnya</string>
 </resources>

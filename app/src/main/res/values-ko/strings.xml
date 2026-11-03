@@ -219,4 +219,6 @@
     <string name="mood_instrumental">연주곡</string>
     <string name="mood_sleep">잠들기 전</string>
     <string name="mood_chill">칠</string>
+    <string name="station_prev">이전 방송국</string>
+    <string name="station_next">다음 방송국</string>
 </resources>

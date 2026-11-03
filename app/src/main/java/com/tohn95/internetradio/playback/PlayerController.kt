@@ -26,6 +26,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -151,7 +152,28 @@ class PlayerController @Inject constructor(
         }
     }
 
-    fun play(station: Station) = withController { c ->
+    /** Очередь ⏮ ⏭: откуда включили станцию (папка, поиск, раздел…) и в каком порядке листать. */
+    private val queue = QueueState()
+    private val queueTick = MutableStateFlow(0)
+    private val _currentSource = MutableStateFlow<PlaySource>(PlaySource.None)
+    val currentSource: StateFlow<PlaySource> = _currentSource
+    private val _shuffle = MutableStateFlow(false)
+    val shuffle: StateFlow<Boolean> = _shuffle
+
+    private fun publishQueue() {
+        _currentSource.value = queue.source
+        _shuffle.value = queue.shuffled
+        queueTick.value++
+    }
+
+    /** Включить станцию из списка [queue] — по нему потом листают ⏮ ⏭ и свайпы. Без списка — по Избранному. */
+    fun play(station: Station, queue: PlayQueue? = null) {
+        this.queue.start(queue, station)
+        publishQueue()
+        startStream(station)
+    }
+
+    private fun startStream(station: Station) = withController { c ->
         _currentStation.value = station
         _streamAlive.value = true
         reconnect.reset()
@@ -180,18 +202,32 @@ class PlayerController @Inject constructor(
         }
     }
 
-    /** Избранное для ⏮ ⏭ в уведомлении/на наушниках: станции листаются по кругу в порядке списка. */
+    /** Избранное — запасной список для станций, включённых без списка (по ссылке, «Мне повезёт»). */
     private val favorites: StateFlow<List<Station>> = repository.favorites()
         .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    /** Переключить станцию по Избранному: +1 вперёд, -1 назад. Не из Избранного — к первой/последней. */
+    /** Есть куда переключаться: от этого зависят ⏮ ⏭ в плеере, уведомлении и свайпы. */
+    val canSkip: StateFlow<Boolean> = combine(queueTick, _currentStation, favorites) { _, s, favs ->
+        queue.hasNeighbors(s?.uuid, favs)
+    }.stateIn(scope, SharingStarted.Eagerly, false)
+
+    /** Переключить станцию по её списку: +1 вперёд, -1 назад, по кругу. */
     fun skip(direction: Int) {
-        val list = favorites.value
-        if (list.isEmpty()) return
-        val idx = list.indexOfFirst { it.uuid == _currentStation.value?.uuid }
-        val next = if (idx < 0) (if (direction > 0) list.first() else list.last())
-        else list[(idx + direction).mod(list.size)]
-        if (next.uuid != _currentStation.value?.uuid) play(next)
+        val next = queue.next(_currentStation.value?.uuid, direction, favorites.value) ?: return
+        startStream(next)
+        queueTick.value++
+    }
+
+    /** Список источника изменился на экране (перестановка, ♡, новая станция в папке) — листаем уже по нему. */
+    fun updateQueue(source: PlaySource, stations: List<Station>) {
+        queue.update(source, stations, _currentStation.value?.uuid)
+        publishQueue()
+    }
+
+    /** 🔀 папки: перемешать порядок листания или вернуть порядок папки. */
+    fun setShuffle(on: Boolean) {
+        queue.setShuffle(on, _currentStation.value?.uuid)
+        publishQueue()
     }
 
     private fun liveLine(station: Station): String = listOfNotNull(
@@ -223,7 +259,7 @@ class PlayerController @Inject constructor(
     /** «Повторить» из плеера: заново подключиться к потоку текущей станции. */
     fun retry() {
         val s = _currentStation.value ?: return
-        val c = controller?.takeIf { it.isConnected && it.mediaItemCount > 0 } ?: return play(s)
+        val c = controller?.takeIf { it.isConnected && it.mediaItemCount > 0 } ?: return startStream(s)
         reconnect.reset()
         _streamAlive.value = true
         c.seekToDefaultPosition()
@@ -249,7 +285,7 @@ class PlayerController @Inject constructor(
      */
     fun togglePlayPause() {
         val s = _currentStation.value ?: return
-        val c = controller?.takeIf { it.isConnected && it.mediaItemCount > 0 } ?: return play(s)
+        val c = controller?.takeIf { it.isConnected && it.mediaItemCount > 0 } ?: return startStream(s)
         if (c.playWhenReady) c.pause() else { c.prepare(); c.play() }
     }
 

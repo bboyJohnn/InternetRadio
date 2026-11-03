@@ -222,4 +222,10 @@
     <string name="mood_chill">Chill</string>
     <string name="station_prev">Vorige zender</string>
     <string name="station_next">Volgende zender</string>
+    <string name="player_from_folder">Uit map</string>
+    <string name="player_from_favorites">Uit favorieten</string>
+    <string name="player_from_search">Zoeken</string>
+    <string name="player_from_genre">Genre</string>
+    <string name="player_from_collection">Uit de selectie</string>
+    <string name="player_from_history">Uit de geschiedenis</string>
 </resources>

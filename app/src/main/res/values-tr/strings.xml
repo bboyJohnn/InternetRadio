@@ -222,4 +222,10 @@
     <string name="mood_chill">Chill</string>
     <string name="station_prev">Önceki istasyon</string>
     <string name="station_next">Sonraki istasyon</string>
+    <string name="player_from_folder">Klasörden</string>
+    <string name="player_from_favorites">Favorilerden</string>
+    <string name="player_from_search">Arama</string>
+    <string name="player_from_genre">Tür</string>
+    <string name="player_from_collection">Seçkiden</string>
+    <string name="player_from_history">Geçmişten</string>
 </resources>

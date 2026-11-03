@@ -221,4 +221,10 @@
     <string name="mood_chill">Chill</string>
     <string name="station_prev">Đài trước</string>
     <string name="station_next">Đài tiếp theo</string>
+    <string name="player_from_folder">Từ thư mục</string>
+    <string name="player_from_favorites">Từ mục yêu thích</string>
+    <string name="player_from_search">Tìm kiếm</string>
+    <string name="player_from_genre">Thể loại</string>
+    <string name="player_from_collection">Từ bộ sưu tập</string>
+    <string name="player_from_history">Từ lịch sử</string>
 </resources>

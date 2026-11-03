@@ -223,4 +223,10 @@
     <string name="mood_chill">Chill</string>
     <string name="station_prev">Estação anterior</string>
     <string name="station_next">Próxima estação</string>
+    <string name="player_from_folder">Da pasta</string>
+    <string name="player_from_favorites">Dos favoritos</string>
+    <string name="player_from_search">Pesquisa</string>
+    <string name="player_from_genre">Gênero</string>
+    <string name="player_from_collection">Da seleção</string>
+    <string name="player_from_history">Do histórico</string>
 </resources>

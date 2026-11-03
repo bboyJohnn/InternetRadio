@@ -221,4 +221,10 @@
     <string name="mood_chill">Chill</string>
     <string name="station_prev">Stasiun sebelumnya</string>
     <string name="station_next">Stasiun berikutnya</string>
+    <string name="player_from_folder">Dari folder</string>
+    <string name="player_from_favorites">Dari favorit</string>
+    <string name="player_from_search">Pencarian</string>
+    <string name="player_from_genre">Genre</string>
+    <string name="player_from_collection">Dari koleksi</string>
+    <string name="player_from_history">Dari riwayat</string>
 </resources>

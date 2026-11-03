@@ -96,7 +96,7 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
     )
     val currentDest = backStack?.destination
     val palette = LocalPalette.current
-    // На полном плеере мини-плеер лишний — там и так всё управление (и информация о станции ниже).
+    // На экране станции нижняя зона (мини-плеер и навигация) прячется — экран целиком отдан плееру.
     val onPlayerScreens = currentDest?.hasRoute(Route.Player::class) == true
 
     Scaffold(
@@ -104,6 +104,11 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
         // Не резервируем место под статус-бар — контент уходит под него (баннер-волна как фон).
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         bottomBar = {
+          AnimatedVisibility(
+              visible = !onPlayerScreens,
+              enter = slideInVertically { it } + fadeIn(),
+              exit = slideOutVertically { it } + fadeOut(),
+          ) {
             // Плавающая зона: карточка мини-плеера + «пилюля» навигации над жестовой полосой.
             Column(
                 Modifier
@@ -112,7 +117,7 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                     .navigationBarsPadding().padding(start = 12.dp, end = 12.dp, top = 16.dp, bottom = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                AnimatedVisibility(visible = station != null && !onPlayerScreens) {
+                AnimatedVisibility(visible = station != null) {
                     station?.let { s ->
                         MiniPlayerBar(
                             station = s, isPlaying = isPlaying, playRequested = playRequested, streamAlive = streamAlive,
@@ -153,6 +158,7 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                     },
                 )
             }
+          }
         },
     ) { padding ->
         val inset = padding.calculateBottomPadding()
@@ -221,10 +227,9 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                     }
                 }
                 composable<Route.Player> {
-                    // Без statusBarsPadding: фон плеера (цвет логотипа) уходит под статус-бар, отступ — внутри экрана.
-                    Box(Modifier.fillMaxSize().padding(bottom = inset)) {
-                        PlayerScreen(onClose = { nav.popBackStack() })
-                    }
+                    // Без statusBarsPadding и нижнего отступа: фон плеера уходит под системные панели,
+                    // нижней зоны приложения на этом экране нет — отступы считаются внутри экрана.
+                    PlayerScreen(onClose = { nav.popBackStack() })
                 }
             }
             // «Нет интернета» — пилюля поверх любого экрана, пока сети нет.

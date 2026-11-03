@@ -222,4 +222,10 @@
     <string name="mood_chill">Chill</string>
     <string name="station_prev">Vorheriger Sender</string>
     <string name="station_next">Nächster Sender</string>
+    <string name="player_from_folder">Aus Ordner</string>
+    <string name="player_from_favorites">Aus Favoriten</string>
+    <string name="player_from_search">Suche</string>
+    <string name="player_from_genre">Genre</string>
+    <string name="player_from_collection">Aus der Sammlung</string>
+    <string name="player_from_history">Aus dem Verlauf</string>
 </resources>

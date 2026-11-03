@@ -222,4 +222,10 @@
     <string name="mood_chill">चिल</string>
     <string name="station_prev">पिछला स्टेशन</string>
     <string name="station_next">अगला स्टेशन</string>
+    <string name="player_from_folder">फ़ोल्डर से</string>
+    <string name="player_from_favorites">पसंदीदा से</string>
+    <string name="player_from_search">खोज</string>
+    <string name="player_from_genre">शैली</string>
+    <string name="player_from_collection">संग्रह से</string>
+    <string name="player_from_history">इतिहास से</string>
 </resources>

@@ -226,4 +226,10 @@
     <string name="mood_chill">هدوء</string>
     <string name="station_prev">المحطة السابقة</string>
     <string name="station_next">المحطة التالية</string>
+    <string name="player_from_folder">من المجلد</string>
+    <string name="player_from_favorites">من المفضلة</string>
+    <string name="player_from_search">البحث</string>
+    <string name="player_from_genre">النوع</string>
+    <string name="player_from_collection">من المجموعة</string>
+    <string name="player_from_history">من السجل</string>
 </resources>

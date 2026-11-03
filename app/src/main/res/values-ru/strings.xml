@@ -224,4 +224,10 @@
     <string name="mood_chill">Чилл</string>
     <string name="station_prev">Предыдущая станция</string>
     <string name="station_next">Следующая станция</string>
+    <string name="player_from_folder">Из папки</string>
+    <string name="player_from_favorites">Из избранного</string>
+    <string name="player_from_search">Поиск</string>
+    <string name="player_from_genre">Жанр</string>
+    <string name="player_from_collection">Из подборки</string>
+    <string name="player_from_history">Из истории</string>
 </resources>

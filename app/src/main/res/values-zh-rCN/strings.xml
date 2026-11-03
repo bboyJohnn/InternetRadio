@@ -221,4 +221,10 @@
     <string name="mood_chill">惬意</string>
     <string name="station_prev">上一个电台</string>
     <string name="station_next">下一个电台</string>
+    <string name="player_from_folder">来自文件夹</string>
+    <string name="player_from_favorites">来自收藏</string>
+    <string name="player_from_search">搜索</string>
+    <string name="player_from_genre">类型</string>
+    <string name="player_from_collection">来自精选</string>
+    <string name="player_from_history">来自历史记录</string>
 </resources>

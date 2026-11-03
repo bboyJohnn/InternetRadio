@@ -221,4 +221,10 @@
     <string name="mood_chill">칠</string>
     <string name="station_prev">이전 방송국</string>
     <string name="station_next">다음 방송국</string>
+    <string name="player_from_folder">폴더에서</string>
+    <string name="player_from_favorites">즐겨찾기에서</string>
+    <string name="player_from_search">검색</string>
+    <string name="player_from_genre">장르</string>
+    <string name="player_from_collection">컬렉션에서</string>
+    <string name="player_from_history">기록에서</string>
 </resources>

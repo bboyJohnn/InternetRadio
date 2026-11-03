@@ -79,6 +79,7 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
     val playRequested by playerController.playRequested.collectAsStateWithLifecycle()
     val streamAlive by playerController.streamAlive.collectAsStateWithLifecycle()
     val metadata by playerController.metadata.collectAsStateWithLifecycle()
+    val canSkip by playerController.canSkip.collectAsStateWithLifecycle()
     val appViewModel: AppViewModel = hiltViewModel()
     val favorites by appViewModel.favoriteUuids.collectAsStateWithLifecycle()
     val online by appViewModel.online.collectAsStateWithLifecycle()
@@ -122,6 +123,8 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                             onToggleFavorite = { appViewModel.toggleFavorite(s) },
                             onToggle = { playerController.togglePlayPause() },
                             onOpen = { nav.navigate(Route.Player) { launchSingleTop = true } },
+                            canSkip = canSkip,
+                            onSkip = { playerController.skip(it) },
                         )
                     }
                 }

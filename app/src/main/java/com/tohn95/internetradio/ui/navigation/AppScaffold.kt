@@ -60,6 +60,7 @@ import com.tohn95.internetradio.ui.components.LocalBottomBarInset
 import com.tohn95.internetradio.ui.components.NavItem
 import com.tohn95.internetradio.ui.components.MiniPlayerBar
 import com.tohn95.internetradio.ui.screens.favorites.FavoritesScreen
+import com.tohn95.internetradio.ui.screens.favorites.FolderScreen
 import com.tohn95.internetradio.ui.screens.genres.GenresScreen
 import com.tohn95.internetradio.ui.screens.stationlist.StationListScreen
 import com.tohn95.internetradio.ui.screens.history.HistoryScreen
@@ -139,7 +140,8 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                         currentDest?.hasRoute(route::class) == true ||
                             // Жанры и списки открываются с Главной — подсвечиваем её вкладку.
                             (route == Route.Home && (currentDest?.hasRoute(Route.Genres::class) == true ||
-                                currentDest?.hasRoute(Route.StationList::class) == true))
+                                currentDest?.hasRoute(Route.StationList::class) == true)) ||
+                            (route == Route.Favorites && currentDest?.hasRoute(Route.Folder::class) == true)
                     },
                     onClick = { route ->
                         if (route == Route.Home && currentDest?.hasRoute(Route.Home::class) == true) {
@@ -212,7 +214,16 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                 composable<Route.Favorites> {
                     // Тёплый красный — цвет сердечка.
                     ScreenFrame(listOf(palette.ambient(15.0), palette.ambient(h), palette.ambient(345.0))) {
-                        FavoritesScreen(playerController = playerController)
+                        FavoritesScreen(
+                            playerController = playerController,
+                            onOpenFolder = { nav.navigate(Route.Folder(it)) },
+                        )
+                    }
+                }
+                composable<Route.Folder> { entry ->
+                    val route = entry.toRoute<Route.Folder>()
+                    ScreenFrame(listOf(palette.ambient(15.0), palette.ambient(h))) {
+                        FolderScreen(route.id, playerController, onBack = { nav.popBackStack() })
                     }
                 }
                 composable<Route.History> {

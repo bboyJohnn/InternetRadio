@@ -96,7 +96,9 @@ fun SearchScreen(
     val sort by viewModel.sort.collectAsStateWithLifecycle()
     val results by viewModel.results.collectAsStateWithLifecycle()
     val loading by viewModel.loading.collectAsStateWithLifecycle()
+    val loadingMore by viewModel.loadingMore.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
+    val loadMoreError by viewModel.loadMoreError.collectAsStateWithLifecycle()
     val countryOptions by viewModel.countryOptions.collectAsStateWithLifecycle()
     val tagOptions by viewModel.tagOptions.collectAsStateWithLifecycle()
     val codecOptions by viewModel.codecOptions.collectAsStateWithLifecycle()
@@ -183,13 +185,23 @@ fun SearchScreen(
                     }
                 }
             }
-            results.isNotEmpty() -> itemsIndexed(results, key = { _, s -> s.uuid }) { index, s ->
-                if (index == results.lastIndex) LaunchedEffect(results.size) { viewModel.loadMore() }
-                StationCard(
-                    s, onClick = { playerController?.play(s, PlayQueue(PlaySource.Search(query.trim()), results)) },
-                    isCurrent = s.uuid == currentUuid,
-                    showListeners = true,
-                )
+            results.isNotEmpty() -> {
+                itemsIndexed(results, key = { _, s -> s.uuid }) { index, s ->
+                    if (index == results.lastIndex) LaunchedEffect(results.size) { viewModel.loadMore() }
+                    StationCard(
+                        s, onClick = { playerController?.play(s, PlayQueue(PlaySource.Search(query.trim()), results)) },
+                        isCurrent = s.uuid == currentUuid,
+                        showListeners = true,
+                    )
+                }
+                if (loadingMore) item(key = "loading_more") {
+                    Box(Modifier.fillMaxWidth().padding(20.dp), contentAlignment = Alignment.Center) {
+                        Text(stringResource(R.string.picker_loading), color = palette.textMuted)
+                    }
+                }
+                if (loadMoreError) item(key = "load_more_error") {
+                    CatalogError(onRetry = viewModel::loadMore, modifier = Modifier.padding(vertical = 12.dp))
+                }
             }
             else -> {
                 // Пока ничего не ищем — не пустота, а сетка жанров (как у radioMii): тап ставит фильтр жанра.

@@ -24,6 +24,8 @@ data class StationEntity(
     val isFavorite: Boolean = false,
     val cachedAt: Long = 0,
     val lastPlayedAt: Long? = null,
+    val favPosition: Int = 0,
+    val favoritedAt: Long = 0,
 )
 
 fun StationEntity.toDomain() = Station(

@@ -69,11 +69,16 @@ class StationRepository @Inject constructor(
 
     /** Своя станция по ссылке: сразу в Избранное (cachedAt=0 — в офлайн-выдачу каталога не попадает). */
     suspend fun addCustomStation(station: Station) =
-        dao.upsertAll(listOf(station.toEntity(cachedAt = 0, isFavorite = true)))
+        dao.upsertFavorite(station.toEntity(cachedAt = 0, isFavorite = true))
 
     /** ♡ из уведомления: там есть только uuid; станция уже в базе (её записала история при запуске). */
     suspend fun toggleFavoriteByUuid(uuid: String) {
         dao.byUuid(uuid)?.let { dao.toggleFavorite(it) }
+    }
+
+    /** Даты добавления нужны сортировке «Недавно добавленные» без повторной подписки на всю модель. */
+    fun favoriteAddedAt(): Flow<Map<String, Long>> = dao.favorites().map { list ->
+        list.associate { it.uuid to it.favoritedAt }
     }
 
     /** Папки со станциями из избранного; станция вне избранного в папке не показывается. */
@@ -82,22 +87,33 @@ class StationRepository @Inject constructor(
         val linksByFolder = links.groupBy { it.folderId }
         folders.map { f ->
             Folder(
-                f.id, f.name,
-                linksByFolder[f.id].orEmpty().sortedByDescending { it.addedAt }.mapNotNull { byUuid[it.stationUuid] },
+                id = f.id,
+                name = f.name,
+                stations = linksByFolder[f.id].orEmpty()
+                    .sortedWith(compareBy<FolderStationEntity> { it.position }.thenByDescending { it.addedAt })
+                    .mapNotNull { byUuid[it.stationUuid] },
+                coverPath = f.coverPath,
+                createdAt = f.createdAt,
             )
         }
     }
 
     suspend fun createFolder(name: String): Long =
-        dao.insertFolder(FolderEntity(name = name.trim(), createdAt = System.currentTimeMillis()))
+        dao.appendFolder(FolderEntity(name = name.trim(), createdAt = System.currentTimeMillis()))
 
     suspend fun renameFolder(id: Long, name: String) = dao.renameFolder(id, name.trim())
     suspend fun deleteFolder(id: Long) = dao.deleteFolder(id)
     suspend fun removeFromFolder(folderId: Long, uuid: String) = dao.removeFromFolder(folderId, uuid)
     suspend fun addToFolder(folderId: Long, uuid: String) =
-        dao.insertLinks(listOf(FolderStationEntity(folderId, uuid, System.currentTimeMillis())))
+        dao.insertLinksAtTop(listOf(FolderStationEntity(folderId, uuid, System.currentTimeMillis())))
     suspend fun setFolders(uuid: String, folderIds: Set<Long>) =
         dao.setMembership(uuid, folderIds, System.currentTimeMillis())
+
+    suspend fun reorderFavorites(orderedUuids: List<String>) = dao.reorderFavorites(orderedUuids)
+    suspend fun reorderFolders(orderedIds: List<Long>) = dao.reorderFolders(orderedIds)
+    suspend fun reorderFolder(folderId: Long, orderedUuids: List<String>) =
+        dao.reorderFolder(folderId, orderedUuids)
+    suspend fun setFolderCover(folderId: Long, path: String?) = dao.setFolderCover(folderId, path)
 
     suspend fun recordPlayed(station: Station) {
         if (dao.byUuid(station.uuid) == null)

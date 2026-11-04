@@ -59,8 +59,12 @@ class SearchViewModel @Inject constructor(
     val results: StateFlow<List<Station>> = _results
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading
+    private val _loadingMore = MutableStateFlow(false)
+    val loadingMore: StateFlow<Boolean> = _loadingMore
     private val _error = MutableStateFlow(false)
     val error: StateFlow<Boolean> = _error
+    private val _loadMoreError = MutableStateFlow(false)
+    val loadMoreError: StateFlow<Boolean> = _loadMoreError
 
     private val _countryOptions = MutableStateFlow<List<Country>>(emptyList())
     val countryOptions: StateFlow<List<Country>> = _countryOptions
@@ -74,9 +78,9 @@ class SearchViewModel @Inject constructor(
 
     fun toggleFavorite(station: Station) = viewModelScope.launch { repository.toggleFavorite(station) }
 
-    private var offset = 0
-    private var pagingJob: Job? = null
     private val pageSize = 30
+    private val pagination = SearchPagination(pageSize)
+    private var pagingJob: Job? = null
 
     init {
         combine(
@@ -88,9 +92,12 @@ class SearchViewModel @Inject constructor(
                 val textOk = q.length >= 3
                 if (!textOk && !f.active) {
                     pagingJob?.cancel()
+                    pagination.reset()
                     _results.value = emptyList()
                     _error.value = false
+                    _loadMoreError.value = false
                     _loading.value = false
+                    _loadingMore.value = false
                     return@onEach
                 }
                 newSearch(if (textOk) q else null, f, s)
@@ -121,8 +128,10 @@ class SearchViewModel @Inject constructor(
 
     private fun newSearch(name: String?, f: SearchFilters, s: SortMode) {
         pagingJob?.cancel()
-        offset = 0
+        pagination.reset()
         _error.value = false
+        _loadMoreError.value = false
+        _loadingMore.value = false
         pagingJob = viewModelScope.launch {
             _loading.value = true
             try {
@@ -130,6 +139,7 @@ class SearchViewModel @Inject constructor(
                     name, f.countryCode, f.tag, f.language, f.codec, f.bitrateMin, s.order, s.reverse, pageSize, 0,
                 )
                 _results.value = r.stations.distinctBy { it.uuid }
+                pagination.onPageReceived(r.stations.size)
                 _error.value = false
             } catch (e: CancellationException) {
                 throw e
@@ -147,9 +157,11 @@ class SearchViewModel @Inject constructor(
         val s = _sort.value
         val textOk = q.length >= 3
         if (!textOk && !f.active) return
-        if (_loading.value) return
+        if (_loading.value || _loadingMore.value || pagination.endReached) return
         if (pagingJob?.isActive == true) return
-        val requestedOffset = offset + pageSize
+        val requestedOffset = pagination.nextOffset
+        _loadingMore.value = true
+        _loadMoreError.value = false
         pagingJob = viewModelScope.launch {
             try {
                 val r = repository.searchStations(
@@ -157,11 +169,14 @@ class SearchViewModel @Inject constructor(
                     s.order, s.reverse, pageSize, requestedOffset,
                 )
                 _results.value = (_results.value + r.stations).distinctBy { it.uuid }
-                offset = requestedOffset
+                pagination.onPageReceived(r.stations.size)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
-                // пагинация не удалась — offset не двигаем
+                // Смещение не двигаем: следующая попытка запросит ту же страницу.
+                _loadMoreError.value = true
+            } finally {
+                _loadingMore.value = false
             }
         }
     }

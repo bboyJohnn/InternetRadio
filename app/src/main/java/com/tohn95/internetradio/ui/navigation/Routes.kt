@@ -6,6 +6,7 @@ sealed interface Route {
     @Serializable data object Home : Route
     @Serializable data object Search : Route
     @Serializable data object Favorites : Route
+    @Serializable data class Folder(val id: Long) : Route
     @Serializable data object History : Route
     @Serializable data object Settings : Route
     @Serializable data object Player : Route

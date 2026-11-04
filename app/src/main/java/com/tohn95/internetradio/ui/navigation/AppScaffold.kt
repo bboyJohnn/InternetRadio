@@ -60,6 +60,7 @@ import com.tohn95.internetradio.ui.components.LocalBottomBarInset
 import com.tohn95.internetradio.ui.components.NavItem
 import com.tohn95.internetradio.ui.components.MiniPlayerBar
 import com.tohn95.internetradio.ui.screens.favorites.FavoritesScreen
+import com.tohn95.internetradio.ui.screens.favorites.FolderScreen
 import com.tohn95.internetradio.ui.screens.genres.GenresScreen
 import com.tohn95.internetradio.ui.screens.stationlist.StationListScreen
 import com.tohn95.internetradio.ui.screens.history.HistoryScreen
@@ -79,6 +80,7 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
     val playRequested by playerController.playRequested.collectAsStateWithLifecycle()
     val streamAlive by playerController.streamAlive.collectAsStateWithLifecycle()
     val metadata by playerController.metadata.collectAsStateWithLifecycle()
+    val canSkip by playerController.canSkip.collectAsStateWithLifecycle()
     val appViewModel: AppViewModel = hiltViewModel()
     val favorites by appViewModel.favoriteUuids.collectAsStateWithLifecycle()
     val online by appViewModel.online.collectAsStateWithLifecycle()
@@ -95,7 +97,7 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
     )
     val currentDest = backStack?.destination
     val palette = LocalPalette.current
-    // На полном плеере мини-плеер лишний — там и так всё управление (и информация о станции ниже).
+    // На экране станции нижняя зона (мини-плеер и навигация) прячется — экран целиком отдан плееру.
     val onPlayerScreens = currentDest?.hasRoute(Route.Player::class) == true
 
     Scaffold(
@@ -103,6 +105,11 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
         // Не резервируем место под статус-бар — контент уходит под него (баннер-волна как фон).
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         bottomBar = {
+          AnimatedVisibility(
+              visible = !onPlayerScreens,
+              enter = slideInVertically { it } + fadeIn(),
+              exit = slideOutVertically { it } + fadeOut(),
+          ) {
             // Плавающая зона: карточка мини-плеера + «пилюля» навигации над жестовой полосой.
             Column(
                 Modifier
@@ -111,7 +118,7 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                     .navigationBarsPadding().padding(start = 12.dp, end = 12.dp, top = 16.dp, bottom = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                AnimatedVisibility(visible = station != null && !onPlayerScreens) {
+                AnimatedVisibility(visible = station != null) {
                     station?.let { s ->
                         MiniPlayerBar(
                             station = s, isPlaying = isPlaying, playRequested = playRequested, streamAlive = streamAlive,
@@ -122,6 +129,8 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                             onToggleFavorite = { appViewModel.toggleFavorite(s) },
                             onToggle = { playerController.togglePlayPause() },
                             onOpen = { nav.navigate(Route.Player) { launchSingleTop = true } },
+                            canSkip = canSkip,
+                            onSkip = { playerController.skip(it) },
                         )
                     }
                 }
@@ -131,7 +140,8 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                         currentDest?.hasRoute(route::class) == true ||
                             // Жанры и списки открываются с Главной — подсвечиваем её вкладку.
                             (route == Route.Home && (currentDest?.hasRoute(Route.Genres::class) == true ||
-                                currentDest?.hasRoute(Route.StationList::class) == true))
+                                currentDest?.hasRoute(Route.StationList::class) == true)) ||
+                            (route == Route.Favorites && currentDest?.hasRoute(Route.Folder::class) == true)
                     },
                     onClick = { route ->
                         if (route == Route.Home && currentDest?.hasRoute(Route.Home::class) == true) {
@@ -150,6 +160,7 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                     },
                 )
             }
+          }
         },
     ) { padding ->
         val inset = padding.calculateBottomPadding()
@@ -203,7 +214,16 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                 composable<Route.Favorites> {
                     // Тёплый красный — цвет сердечка.
                     ScreenFrame(listOf(palette.ambient(15.0), palette.ambient(h), palette.ambient(345.0))) {
-                        FavoritesScreen(playerController = playerController)
+                        FavoritesScreen(
+                            playerController = playerController,
+                            onOpenFolder = { nav.navigate(Route.Folder(it)) },
+                        )
+                    }
+                }
+                composable<Route.Folder> { entry ->
+                    val route = entry.toRoute<Route.Folder>()
+                    ScreenFrame(listOf(palette.ambient(15.0), palette.ambient(h))) {
+                        FolderScreen(route.id, playerController, onBack = { nav.popBackStack() })
                     }
                 }
                 composable<Route.History> {
@@ -218,10 +238,9 @@ fun AppScaffold(playerController: PlayerController, wavesAnimated: Boolean) {
                     }
                 }
                 composable<Route.Player> {
-                    // Без statusBarsPadding: фон плеера (цвет логотипа) уходит под статус-бар, отступ — внутри экрана.
-                    Box(Modifier.fillMaxSize().padding(bottom = inset)) {
-                        PlayerScreen(onClose = { nav.popBackStack() })
-                    }
+                    // Без statusBarsPadding и нижнего отступа: фон плеера уходит под системные панели,
+                    // нижней зоны приложения на этом экране нет — отступы считаются внутри экрана.
+                    PlayerScreen(onClose = { nav.popBackStack() })
                 }
             }
             // «Нет интернета» — пилюля поверх любого экрана, пока сети нет.

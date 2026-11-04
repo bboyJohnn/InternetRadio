@@ -43,6 +43,7 @@ fun Modifier.marquee(): Modifier = basicMarquee(iterations = Int.MAX_VALUE, init
 /**
  * Плавающий мини-плеер: объёмная карточка с тенью и подсветкой в цвет темы,
  * логотип, бегущие строки станции и трека, ♡ слева от паузы.
+ * Смахнуть влево/вправо — соседняя станция из того же списка (как в Spotify).
  */
 @Composable
 fun MiniPlayerBar(
@@ -56,13 +57,15 @@ fun MiniPlayerBar(
     onToggleFavorite: () -> Unit,
     onToggle: () -> Unit,
     onOpen: () -> Unit,
+    canSkip: Boolean,
+    onSkip: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val palette = LocalPalette.current
     val shape = RoundedCornerShape(20.dp)
     val tinted = lerp(palette.cardBg, palette.primary, 0.28f)
     Row(
-        modifier.fillMaxWidth().height(68.dp)
+        modifier.swipeToSkip(canSkip, onSkip).fillMaxWidth().height(68.dp)
             .shadow(10.dp, shape, spotColor = Color.Black)
             .clip(shape)
             .background(Brush.horizontalGradient(listOf(tinted, palette.cardBg)))

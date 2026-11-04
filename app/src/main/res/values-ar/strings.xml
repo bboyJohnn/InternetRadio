@@ -146,7 +146,23 @@
     <string name="folder_name_hint">اسم المجلد</string>
     <string name="folder_pick_title">مجلدات المحطة</string>
     <string name="folder_pick_empty">لا توجد مجلدات بعد — أنشئ أول مجلد.</string>
-    <string name="folder_empty">المجلد فارغ. أضف محطات عبر ⋮ في قائمة المفضلة.</string>
+    <string name="fav_sort_custom">ترتيب مخصص</string>
+    <string name="fav_sort_name">حسب الاسم</string>
+    <string name="fav_sort_recent">المضافة حديثاً</string>
+    <string name="fav_search_hint">البحث في المفضلة</string>
+    <string name="fav_drop_hint">أفلت للإضافة إلى هذا المجلد</string>
+    <string name="fav_added_to_folder">أضيفت إلى «%1$s»</string>
+    <string name="folder_empty">لا يوجد شيء هنا بعد</string>
+    <string name="folder_add_stations">إضافة محطات</string>
+    <string name="folder_share">مشاركة</string>
+    <string name="folder_shuffle">تشغيل عشوائي</string>
+    <string name="folder_play">استماع</string>
+    <string name="folder_change_cover">تغيير الغلاف</string>
+    <string name="folder_reset_cover">استعادة الكولاج</string>
+    <string name="folder_move_to">نقل إلى مجلد آخر</string>
+    <string name="cover_crop_title">غلاف المجلد</string>
+    <string name="cover_crop_hint">اسحب وكبّر بإصبعين</string>
+    <string name="cover_crop_done">تم</string>
     <string name="dialog_create">إنشاء</string>
     <string name="dialog_save">حفظ</string>
     <string name="dialog_cancel">إلغاء</string>
@@ -224,4 +240,12 @@
     <string name="mood_instrumental">موسيقى آلية</string>
     <string name="mood_sleep">قبل النوم</string>
     <string name="mood_chill">هدوء</string>
+    <string name="station_prev">المحطة السابقة</string>
+    <string name="station_next">المحطة التالية</string>
+    <string name="player_from_folder">من المجلد</string>
+    <string name="player_from_favorites">من المفضلة</string>
+    <string name="player_from_search">البحث</string>
+    <string name="player_from_genre">النوع</string>
+    <string name="player_from_collection">من المجموعة</string>
+    <string name="player_from_history">من السجل</string>
 </resources>

@@ -146,7 +146,23 @@
     <string name="folder_name_hint">Nome della cartella</string>
     <string name="folder_pick_title">Cartelle della stazione</string>
     <string name="folder_pick_empty">Ancora nessuna cartella: crea la prima.</string>
-    <string name="folder_empty">La cartella è vuota. Aggiungi stazioni con ⋮ nell’elenco dei preferiti.</string>
+    <string name="fav_sort_custom">Ordine personalizzato</string>
+    <string name="fav_sort_name">Per nome</string>
+    <string name="fav_sort_recent">Aggiunte di recente</string>
+    <string name="fav_search_hint">Cerca nei preferiti</string>
+    <string name="fav_drop_hint">Rilascia per aggiungere a questa cartella</string>
+    <string name="fav_added_to_folder">Aggiunta a «%1$s»</string>
+    <string name="folder_empty">Non c’è ancora niente qui</string>
+    <string name="folder_add_stations">Aggiungi stazioni</string>
+    <string name="folder_share">Condividi</string>
+    <string name="folder_shuffle">Riproduzione casuale</string>
+    <string name="folder_play">Ascolta</string>
+    <string name="folder_change_cover">Cambia copertina</string>
+    <string name="folder_reset_cover">Ripristina collage</string>
+    <string name="folder_move_to">Sposta in un’altra cartella</string>
+    <string name="cover_crop_title">Copertina della cartella</string>
+    <string name="cover_crop_hint">Trascina e pizzica per ingrandire</string>
+    <string name="cover_crop_done">Fatto</string>
     <string name="dialog_create">Crea</string>
     <string name="dialog_save">Salva</string>
     <string name="dialog_cancel">Annulla</string>
@@ -221,4 +237,12 @@
     <string name="mood_instrumental">Strumentale</string>
     <string name="mood_sleep">Per dormire</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Stazione precedente</string>
+    <string name="station_next">Stazione successiva</string>
+    <string name="player_from_folder">Dalla cartella</string>
+    <string name="player_from_favorites">Dai preferiti</string>
+    <string name="player_from_search">Ricerca</string>
+    <string name="player_from_genre">Genere</string>
+    <string name="player_from_collection">Dalla selezione</string>
+    <string name="player_from_history">Dalla cronologia</string>
 </resources>

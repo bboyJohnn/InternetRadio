@@ -11,6 +11,8 @@ data class FolderEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
     val createdAt: Long,
+    val position: Int = 0,
+    val coverPath: String? = null,
 )
 
 /** Станция в папке. Одна станция может лежать в нескольких папках. */
@@ -29,4 +31,5 @@ data class FolderStationEntity(
     val folderId: Long,
     val stationUuid: String,
     val addedAt: Long,
+    val position: Int = 0,
 )

@@ -146,7 +146,23 @@
     <string name="folder_name_hint">Nombre de la carpeta</string>
     <string name="folder_pick_title">Carpetas de la emisora</string>
     <string name="folder_pick_empty">Aún no hay carpetas: crea la primera.</string>
-    <string name="folder_empty">La carpeta está vacía. Añade emisoras con ⋮ en la lista de favoritos.</string>
+    <string name="fav_sort_custom">Orden personalizado</string>
+    <string name="fav_sort_name">Por nombre</string>
+    <string name="fav_sort_recent">Añadidas recientemente</string>
+    <string name="fav_search_hint">Buscar en favoritos</string>
+    <string name="fav_drop_hint">Suelta para añadir a esta carpeta</string>
+    <string name="fav_added_to_folder">Añadida a «%1$s»</string>
+    <string name="folder_empty">Aún no hay nada aquí</string>
+    <string name="folder_add_stations">Añadir emisoras</string>
+    <string name="folder_share">Compartir</string>
+    <string name="folder_shuffle">Aleatorio</string>
+    <string name="folder_play">Escuchar</string>
+    <string name="folder_change_cover">Cambiar portada</string>
+    <string name="folder_reset_cover">Restaurar collage</string>
+    <string name="folder_move_to">Mover a otra carpeta</string>
+    <string name="cover_crop_title">Portada de la carpeta</string>
+    <string name="cover_crop_hint">Arrastra y haz zoom con los dedos</string>
+    <string name="cover_crop_done">Listo</string>
     <string name="dialog_create">Crear</string>
     <string name="dialog_save">Guardar</string>
     <string name="dialog_cancel">Cancelar</string>
@@ -221,4 +237,12 @@
     <string name="mood_instrumental">Instrumental</string>
     <string name="mood_sleep">Para dormir</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Emisora anterior</string>
+    <string name="station_next">Emisora siguiente</string>
+    <string name="player_from_folder">De la carpeta</string>
+    <string name="player_from_favorites">De favoritos</string>
+    <string name="player_from_search">Búsqueda</string>
+    <string name="player_from_genre">Género</string>
+    <string name="player_from_collection">De la selección</string>
+    <string name="player_from_history">Del historial</string>
 </resources>

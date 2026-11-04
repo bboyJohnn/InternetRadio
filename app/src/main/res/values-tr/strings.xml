@@ -146,7 +146,23 @@
     <string name="folder_name_hint">Klasör adı</string>
     <string name="folder_pick_title">İstasyonun klasörleri</string>
     <string name="folder_pick_empty">Henüz klasör yok — ilkini oluşturun.</string>
-    <string name="folder_empty">Klasör boş. Favoriler listesindeki ⋮ ile istasyon ekleyin.</string>
+    <string name="fav_sort_custom">Özel sıra</string>
+    <string name="fav_sort_name">Ada göre</string>
+    <string name="fav_sort_recent">Son eklenenler</string>
+    <string name="fav_search_hint">Favorilerde ara</string>
+    <string name="fav_drop_hint">Bu klasöre eklemek için bırakın</string>
+    <string name="fav_added_to_folder">“%1$s” klasörüne eklendi</string>
+    <string name="folder_empty">Burada henüz bir şey yok</string>
+    <string name="folder_add_stations">İstasyon ekle</string>
+    <string name="folder_share">Paylaş</string>
+    <string name="folder_shuffle">Karıştır</string>
+    <string name="folder_play">Dinle</string>
+    <string name="folder_change_cover">Kapağı değiştir</string>
+    <string name="folder_reset_cover">Kolajı geri yükle</string>
+    <string name="folder_move_to">Başka klasöre taşı</string>
+    <string name="cover_crop_title">Klasör kapağı</string>
+    <string name="cover_crop_hint">Sürükleyin ve parmaklarınızla yakınlaştırın</string>
+    <string name="cover_crop_done">Bitti</string>
     <string name="dialog_create">Oluştur</string>
     <string name="dialog_save">Kaydet</string>
     <string name="dialog_cancel">İptal</string>
@@ -220,4 +236,12 @@
     <string name="mood_instrumental">Enstrümantal</string>
     <string name="mood_sleep">Uyku öncesi</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Önceki istasyon</string>
+    <string name="station_next">Sonraki istasyon</string>
+    <string name="player_from_folder">Klasörden</string>
+    <string name="player_from_favorites">Favorilerden</string>
+    <string name="player_from_search">Arama</string>
+    <string name="player_from_genre">Tür</string>
+    <string name="player_from_collection">Seçkiden</string>
+    <string name="player_from_history">Geçmişten</string>
 </resources>

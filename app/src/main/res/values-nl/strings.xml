@@ -146,7 +146,23 @@
     <string name="folder_name_hint">Mapnaam</string>
     <string name="folder_pick_title">Mappen voor de zender</string>
     <string name="folder_pick_empty">Nog geen mappen — maak de eerste aan.</string>
-    <string name="folder_empty">Deze map is leeg. Voeg zenders toe via ⋮ in de favorietenlijst.</string>
+    <string name="fav_sort_custom">Aangepaste volgorde</string>
+    <string name="fav_sort_name">Op naam</string>
+    <string name="fav_sort_recent">Recent toegevoegd</string>
+    <string name="fav_search_hint">Zoeken in favorieten</string>
+    <string name="fav_drop_hint">Laat los om aan deze map toe te voegen</string>
+    <string name="fav_added_to_folder">Toegevoegd aan ‘%1$s’</string>
+    <string name="folder_empty">Hier is nog niets</string>
+    <string name="folder_add_stations">Zenders toevoegen</string>
+    <string name="folder_share">Delen</string>
+    <string name="folder_shuffle">Willekeurig</string>
+    <string name="folder_play">Luisteren</string>
+    <string name="folder_change_cover">Omslag wijzigen</string>
+    <string name="folder_reset_cover">Collage herstellen</string>
+    <string name="folder_move_to">Naar andere map verplaatsen</string>
+    <string name="cover_crop_title">Mapomslag</string>
+    <string name="cover_crop_hint">Sleep en knijp om te zoomen</string>
+    <string name="cover_crop_done">Gereed</string>
     <string name="dialog_create">Maken</string>
     <string name="dialog_save">Opslaan</string>
     <string name="dialog_cancel">Annuleren</string>
@@ -220,4 +236,12 @@
     <string name="mood_instrumental">Instrumentaal</string>
     <string name="mood_sleep">Om in te slapen</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Vorige zender</string>
+    <string name="station_next">Volgende zender</string>
+    <string name="player_from_folder">Uit map</string>
+    <string name="player_from_favorites">Uit favorieten</string>
+    <string name="player_from_search">Zoeken</string>
+    <string name="player_from_genre">Genre</string>
+    <string name="player_from_collection">Uit de selectie</string>
+    <string name="player_from_history">Uit de geschiedenis</string>
 </resources>

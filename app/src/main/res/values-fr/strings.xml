@@ -146,7 +146,23 @@
     <string name="folder_name_hint">Nom du dossier</string>
     <string name="folder_pick_title">Dossiers de la station</string>
     <string name="folder_pick_empty">Aucun dossier pour l’instant : créez le premier.</string>
-    <string name="folder_empty">Ce dossier est vide. Ajoutez des stations via ⋮ dans la liste des favoris.</string>
+    <string name="fav_sort_custom">Ordre personnalisé</string>
+    <string name="fav_sort_name">Par nom</string>
+    <string name="fav_sort_recent">Ajouts récents</string>
+    <string name="fav_search_hint">Rechercher dans les favoris</string>
+    <string name="fav_drop_hint">Relâchez pour ajouter à ce dossier</string>
+    <string name="fav_added_to_folder">Ajoutée à « %1$s »</string>
+    <string name="folder_empty">Rien ici pour le moment</string>
+    <string name="folder_add_stations">Ajouter des stations</string>
+    <string name="folder_share">Partager</string>
+    <string name="folder_shuffle">Lecture aléatoire</string>
+    <string name="folder_play">Écouter</string>
+    <string name="folder_change_cover">Changer la pochette</string>
+    <string name="folder_reset_cover">Restaurer le collage</string>
+    <string name="folder_move_to">Déplacer vers un autre dossier</string>
+    <string name="cover_crop_title">Pochette du dossier</string>
+    <string name="cover_crop_hint">Faites glisser et pincez pour zoomer</string>
+    <string name="cover_crop_done">OK</string>
     <string name="dialog_create">Créer</string>
     <string name="dialog_save">Enregistrer</string>
     <string name="dialog_cancel">Annuler</string>
@@ -221,4 +237,12 @@
     <string name="mood_instrumental">Instrumental</string>
     <string name="mood_sleep">Pour dormir</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Station précédente</string>
+    <string name="station_next">Station suivante</string>
+    <string name="player_from_folder">Du dossier</string>
+    <string name="player_from_favorites">Des favoris</string>
+    <string name="player_from_search">Recherche</string>
+    <string name="player_from_genre">Genre</string>
+    <string name="player_from_collection">De la sélection</string>
+    <string name="player_from_history">De l\'historique</string>
 </resources>

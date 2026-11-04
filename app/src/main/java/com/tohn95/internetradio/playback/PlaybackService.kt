@@ -103,16 +103,13 @@ class PlaybackService : MediaSessionService() {
             .setMediaButtonPreferences(listOf(heartButton(false)))
             .build()
 
-        // ♡ в уведомлении отражает избранное (в т.ч. если сердечко нажали в приложении),
-        // а ⏮ ⏭ доступны, только когда в Избранном есть куда переключаться.
+        // ♡ в уведомлении отражает избранное (в т.ч. если сердечко нажали в приложении).
         scope.launch {
-            combine(currentUuid, repository.favoriteUuids()) { uuid, favs -> uuid to favs }
-                .collect { (uuid, favs) ->
-                    val isFav = uuid != null && uuid in favs
-                    mediaSession?.setMediaButtonPreferences(listOf(heartButton(isFav)))
-                    player.canSkip = favs.size >= 2 || (favs.isNotEmpty() && !isFav)
-                }
+            combine(currentUuid, repository.favoriteUuids()) { uuid, favs -> uuid != null && uuid in favs }
+                .collect { isFav -> mediaSession?.setMediaButtonPreferences(listOf(heartButton(isFav))) }
         }
+        // ⏮ ⏭ — только когда в списке, откуда включили станцию, есть куда переключаться.
+        scope.launch { playerController.canSkip.collect { player.canSkip = it } }
     }
 
     private val sessionCallback = object : MediaSession.Callback {

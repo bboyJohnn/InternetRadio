@@ -45,6 +45,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tohn95.internetradio.playback.PlayQueue
+import com.tohn95.internetradio.playback.PlaySource
 import com.tohn95.internetradio.ui.components.LocalBottomBarInset
 import com.tohn95.internetradio.R
 import com.tohn95.internetradio.util.countryDisplayName
@@ -85,7 +87,8 @@ fun HomeScreen(
     val recent by viewModel.recent.collectAsStateWithLifecycle()
     val favs by viewModel.favoriteUuids.collectAsStateWithLifecycle()
     var boost by remember { mutableIntStateOf(0) }
-    val play: (Station) -> Unit = { boost++; playerController?.play(it) }
+    // Станция с Главной листается по своему разделу (⏮ ⏭, свайпы); одиночные карточки — по Избранному.
+    val playFrom: (Station, PlayQueue?) -> Unit = { s, q -> boost++; playerController?.play(s, q) }
     val pullState = rememberPullToRefreshState()
 
     // Заголовки для маршрутов считаем здесь: внутри LazyListScope нет @Composable-контекста.
@@ -170,7 +173,7 @@ fun HomeScreen(
                             Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                                 state.popular.chunked(2).forEach { row ->
                                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                                        row.forEach { s -> PopularCard(s, onClick = { play(s) }, modifier = Modifier.weight(1f)) }
+                                        row.forEach { s -> PopularCard(s, onClick = { playFrom(s, PlayQueue(PlaySource.Section(tPopular), state.popular)) }, modifier = Modifier.weight(1f)) }
                                         if (row.size == 1) Spacer(Modifier.weight(1f))
                                     }
                                 }
@@ -192,14 +195,14 @@ fun HomeScreen(
                         item(key = "new") {
                             NewStationCard(
                                 s, isFavorite = s.uuid in favs,
-                                onPlay = { play(s) }, onToggleFavorite = { viewModel.toggleFavorite(s) },
+                                onPlay = { playFrom(s, null) }, onToggleFavorite = { viewModel.toggleFavorite(s) },
                                 modifier = Modifier.padding(horizontal = 16.dp),
                             )
                         }
                     }
 
                     // 5. Для тебя (крупные плитки).
-                    stationCarousel("foryou", tForYou, state.forYou, tile = 156.dp, onPlay = play)
+                    stationCarousel("foryou", tForYou, state.forYou, tile = 156.dp, onPlay = { s -> playFrom(s, PlayQueue(PlaySource.Section(tForYou), state.forYou)) })
 
                     // 6. Миксы жанров (фото + значок «МИКС» + полоса) → список жанра.
                     if (state.mixes.isNotEmpty()) {
@@ -226,7 +229,7 @@ fun HomeScreen(
                                 contentPadding = PaddingValues(horizontal = 16.dp),
                                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                             ) {
-                                items(recent, key = { "r" + it.uuid }) { s -> RecentTile(s, onClick = { play(s) }) }
+                                items(recent, key = { "r" + it.uuid }) { s -> RecentTile(s, onClick = { playFrom(s, PlayQueue(PlaySource.History, recent)) }) }
                             }
                         }
                     }
@@ -236,7 +239,7 @@ fun HomeScreen(
                         item(key = "trend_h") {
                             SectionHeader(tTrend, onMore = { onOpenList(Route.StationList(ListKind.TREND.name, tTrend)) })
                         }
-                        item(key = "trend") { ChartPanel(state.trending, onPlay = play, modifier = Modifier.padding(horizontal = 16.dp)) }
+                        item(key = "trend") { ChartPanel(state.trending, onPlay = { s -> playFrom(s, PlayQueue(PlaySource.Section(tTrend), state.trending)) }, modifier = Modifier.padding(horizontal = 16.dp)) }
                     }
 
                     // 9. Под настроение — цветные блоки 2×2 (каждый раз 4 случайных).
@@ -252,7 +255,7 @@ fun HomeScreen(
                     }
 
                     // 10. Эфир своей страны — обычные плитки (случайные 15 из топ-60).
-                    stationCarousel("local", tLocal, state.local, onPlay = play,
+                    stationCarousel("local", tLocal, state.local, onPlay = { s -> playFrom(s, PlayQueue(PlaySource.Section(tLocal), state.local)) },
                         onMore = { onOpenList(Route.StationList(ListKind.COUNTRY.name, tLocal, viewModel.countryCode)) })
 
                     // 11. Радио мира — круглые флаги (8 случайных стран).
@@ -280,7 +283,7 @@ fun HomeScreen(
                         item(key = "hq_h") {
                             SectionHeader(tHq, onMore = { onOpenList(Route.StationList(ListKind.HQ.name, tHq)) })
                         }
-                        item(key = "hq") { HqPillGrid(state.hq, onPlay = play) }
+                        item(key = "hq") { HqPillGrid(state.hq, onPlay = { s -> playFrom(s, PlayQueue(PlaySource.Section(tHq), state.hq)) }) }
                     }
                 }
             }

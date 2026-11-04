@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.tohn95.internetradio.playback.PlaySource
 import com.tohn95.internetradio.R
 import com.tohn95.internetradio.data.StationRepository
 import com.tohn95.internetradio.domain.model.Station
@@ -50,6 +51,8 @@ class StationListViewModel @Inject constructor(
     private val route = savedStateHandle.toRoute<Route.StationList>()
     val title: String = route.title
     private val kind = runCatching { ListKind.valueOf(route.kind) }.getOrDefault(ListKind.POPULAR)
+    /** Откуда играет станция из этого списка: жанр (подборки по тегу) или раздел. */
+    val source: PlaySource = if (kind == ListKind.TAG) PlaySource.Genre(title) else PlaySource.Section(title)
     private val paged = kind == ListKind.TAG || kind == ListKind.COUNTRY
 
     val sorts: List<ListSort> = if (kind == ListKind.TREND) ListSort.entries else ListSort.entries - ListSort.TREND

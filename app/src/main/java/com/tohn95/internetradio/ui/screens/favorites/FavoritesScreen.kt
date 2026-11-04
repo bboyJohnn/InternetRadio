@@ -1,6 +1,5 @@
 package com.tohn95.internetradio.ui.screens.favorites
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,27 +14,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.CreateNewFolder
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,7 +50,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
-import com.tohn95.internetradio.ui.components.stationsCount
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -59,13 +61,21 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tohn95.internetradio.R
 import com.tohn95.internetradio.domain.model.Folder
 import com.tohn95.internetradio.domain.model.Station
+import com.tohn95.internetradio.playback.PlayQueue
+import com.tohn95.internetradio.playback.PlaySource
 import com.tohn95.internetradio.playback.PlayerController
 import com.tohn95.internetradio.ui.components.LocalBottomBarInset
 import com.tohn95.internetradio.ui.components.MetaChipRow
+import com.tohn95.internetradio.ui.components.SearchField
 import com.tohn95.internetradio.ui.components.StationImage
+import com.tohn95.internetradio.ui.components.dragDropContainer
+import com.tohn95.internetradio.ui.components.dragDropItem
 import com.tohn95.internetradio.ui.components.marquee
 import com.tohn95.internetradio.ui.components.rememberCurrentUuid
+import com.tohn95.internetradio.ui.components.rememberDragDropState
+import com.tohn95.internetradio.ui.components.stationsCount
 import com.tohn95.internetradio.ui.theme.LocalPalette
+import kotlinx.coroutines.delay
 
 private sealed interface FavDialog {
     data class Create(val thenAdd: Station? = null) : FavDialog
@@ -82,86 +92,127 @@ private sealed interface FavDialog {
 @Composable
 fun FavoritesScreen(
     playerController: PlayerController? = null,
+    onOpenFolder: (Long) -> Unit = {},
     viewModel: FavoritesViewModel = hiltViewModel(),
 ) {
     val palette = LocalPalette.current
-    val favorites by viewModel.favorites.collectAsStateWithLifecycle()
+    val library by viewModel.library.collectAsStateWithLifecycle()
     val folders by viewModel.folders.collectAsStateWithLifecycle()
-    var openFolderId by rememberSaveable { mutableStateOf<Long?>(null) }
-    var dialog by remember { mutableStateOf<FavDialog?>(null) }
-    val openFolder = folders.firstOrNull { it.id == openFolderId }
-    val play: (Station) -> Unit = { playerController?.play(it) }
+    val filter by viewModel.filter.collectAsStateWithLifecycle()
+    val sort by viewModel.sort.collectAsStateWithLifecycle()
+    val query by viewModel.query.collectAsStateWithLifecycle()
+    val notice by viewModel.notice.collectAsStateWithLifecycle()
     val currentUuid = rememberCurrentUuid(playerController)
+    var searchVisible by rememberSaveable { mutableStateOf(false) }
+    var dialog by remember { mutableStateOf<FavDialog?>(null) }
+    val listState = rememberLazyListState()
+    val folderKey = remember { { key: Any -> key is String && key.startsWith("folder:") } }
+    val dragState = rememberDragDropState(listState, folderKey) {
+        sort == FavSort.CUSTOM && query.isBlank()
+    }
 
-    BackHandler(enabled = openFolder != null) { openFolderId = null }
+    LaunchedEffect(library.stations) {
+        playerController?.updateQueue(PlaySource.Favorites, library.stations)
+    }
+    LaunchedEffect(notice) {
+        if (notice != null) { delay(2200); viewModel.noticeShown() }
+    }
 
     Column(Modifier.fillMaxSize()) {
         Row(
-            Modifier.fillMaxWidth().padding(start = if (openFolder != null) 4.dp else 16.dp, end = 4.dp, top = 8.dp, bottom = 4.dp),
+            Modifier.fillMaxWidth().padding(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (openFolder != null) {
-                IconButton(onClick = { openFolderId = null }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = palette.text)
-                }
-            }
             Text(
-                openFolder?.name ?: stringResource(R.string.fav_title), color = palette.text, fontSize = 26.sp,
-                fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f),
+                stringResource(R.string.fav_title), color = palette.text, fontSize = 26.sp,
+                fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f),
             )
-            if (openFolder == null) {
-                AddMenu(onNewFolder = { dialog = FavDialog.Create() }, onCustom = { dialog = FavDialog.Custom })
-            } else {
-                FolderMenu(
-                    onRename = { dialog = FavDialog.Rename(openFolder) },
-                    onDelete = { dialog = FavDialog.Delete(openFolder) },
-                )
+            IconButton(onClick = { searchVisible = !searchVisible; if (!searchVisible) viewModel.setQuery("") }) {
+                Icon(Icons.Filled.Search, stringResource(R.string.fav_search_hint), tint = palette.text)
             }
+            AddMenu(onNewFolder = { dialog = FavDialog.Create() }, onCustom = { dialog = FavDialog.Custom })
+        }
+        if (searchVisible || query.isNotEmpty()) {
+            SearchField(
+                value = query, onValueChange = viewModel::setQuery,
+                placeholder = stringResource(R.string.fav_search_hint),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
+            )
+        }
+        Row(
+            Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            FilterChip(
+                selected = filter == LibraryFilter.FOLDERS,
+                onClick = { viewModel.setFilter(LibraryFilter.FOLDERS) },
+                label = { Text(stringResource(R.string.fav_folders)) },
+            )
+            FilterChip(
+                selected = filter == LibraryFilter.STATIONS,
+                onClick = { viewModel.setFilter(LibraryFilter.STATIONS) },
+                label = { Text(stringResource(R.string.fav_stations)) },
+            )
+            Box(Modifier.weight(1f))
+            SortMenu(sort, viewModel::setSort)
         }
 
-        val listPadding = PaddingValues(bottom = 12.dp + LocalBottomBarInset.current)
-        if (openFolder == null) {
-            if (favorites.isEmpty() && folders.isEmpty()) {
-                Box(Modifier.fillMaxSize().padding(24.dp), contentAlignment = Alignment.Center) {
-                    Text(stringResource(R.string.empty_favorites), color = palette.textMuted)
-                }
-            } else LazyColumn(Modifier.fillMaxSize(), contentPadding = listPadding) {
-                item(key = "folders_h") { SubHeader(stringResource(R.string.fav_folders)) }
-                items(folders, key = { "f${it.id}" }) { f -> FolderRow(f, onClick = { openFolderId = f.id }) }
-                item(key = "new_folder") { NewFolderRow(onClick = { dialog = FavDialog.Create() }) }
-                item(key = "stations_h") {
-                    SubHeader(stringResource(R.string.fav_stations) + " · " + favorites.size)
-                }
-                items(favorites, key = { "s${it.uuid}" }) { s ->
-                    FavoriteRow(
-                        s, onPlay = { play(s) },
-                        onAddToFolder = { dialog = FavDialog.Pick(s) },
-                        onRemoveFavorite = { viewModel.removeFavorite(s) },
-                        isCurrent = s.uuid == currentUuid,
-                    )
-                }
+        if (library.isEmpty) {
+            Box(Modifier.weight(1f).fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
+                Text(stringResource(R.string.empty_favorites), color = palette.textMuted)
             }
         } else {
-            LazyColumn(Modifier.fillMaxSize(), contentPadding = listPadding) {
-                item(key = "count") {
-                    Text(
-                        stationsCount(openFolder.stations.size),
-                        color = palette.textMuted, fontSize = 13.sp, modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
+            LazyColumn(
+                state = listState,
+                modifier = Modifier.weight(1f).dragDropContainer(
+                    state = dragState,
+                    onReorder = { from, to ->
+                        val a = from.toString(); val b = to.toString()
+                        if (a.startsWith("folder:") && b.startsWith("folder:")) {
+                            viewModel.reorderFolders(a.removePrefix("folder:").toLong(), b.removePrefix("folder:").toLong())
+                        } else if (a.startsWith("station:") && b.startsWith("station:")) {
+                            viewModel.reorderStations(a.removePrefix("station:"), b.removePrefix("station:"))
+                        }
+                    },
+                    onDropInto = { station, folder ->
+                        viewModel.dropInto(station.toString().removePrefix("station:"), folder.toString().removePrefix("folder:").toLong())
+                    },
+                ),
+                contentPadding = PaddingValues(bottom = 12.dp + LocalBottomBarInset.current),
+            ) {
+                items(library.folders, key = { "folder:${it.id}" }) { folder ->
+                    val key = "folder:${folder.id}"
+                    FolderRow(
+                        folder = folder,
+                        onClick = { onOpenFolder(folder.id) },
+                        highlighted = (dragState.target as? DragTarget.Into)?.folderKey == key,
+                        modifier = Modifier.dragDropItem(dragState, key),
                     )
                 }
-                if (openFolder.stations.isEmpty()) item(key = "empty") {
-                    Text(stringResource(R.string.folder_empty), color = palette.textMuted, modifier = Modifier.padding(24.dp))
+                if (filter != LibraryFilter.STATIONS && query.isBlank()) {
+                    item(key = "new_folder") { NewFolderRow(onClick = { dialog = FavDialog.Create() }) }
                 }
-                items(openFolder.stations, key = { it.uuid }) { s ->
+                items(library.stations, key = { "station:${it.uuid}" }) { station ->
+                    val key = "station:${station.uuid}"
                     FavoriteRow(
-                        s, onPlay = { play(s) },
-                        onAddToFolder = { dialog = FavDialog.Pick(s) },
-                        onRemoveFromFolder = { viewModel.removeFromFolder(openFolder.id, s) },
-                        onRemoveFavorite = { viewModel.removeFavorite(s) },
-                        isCurrent = s.uuid == currentUuid,
+                        station = station,
+                        onPlay = { playerController?.play(station, PlayQueue(PlaySource.Favorites, library.stations)) },
+                        onAddToFolder = { dialog = FavDialog.Pick(station) },
+                        onRemoveFavorite = { viewModel.removeFavorite(station) },
+                        isCurrent = station.uuid == currentUuid,
+                        modifier = Modifier.dragDropItem(dragState, key),
                     )
                 }
             }
+        }
+        if (notice != null) {
+            Text(
+                stringResource(R.string.fav_added_to_folder, notice.orEmpty()),
+                color = palette.primary, fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp),
+            )
         }
     }
 
@@ -181,11 +232,9 @@ fun FavoritesScreen(
             title = { Text(stringResource(R.string.folder_delete)) },
             text = { Text(stringResource(R.string.folder_delete_confirm, d.folder.name)) },
             confirmButton = {
-                TextButton(onClick = {
-                    viewModel.deleteFolder(d.folder.id)
-                    if (openFolderId == d.folder.id) openFolderId = null
-                    dialog = null
-                }) { Text(stringResource(R.string.dialog_delete), color = palette.red) }
+                TextButton(onClick = { viewModel.deleteFolder(d.folder.id); dialog = null }) {
+                    Text(stringResource(R.string.dialog_delete), color = palette.red)
+                }
             },
             dismissButton = { TextButton(onClick = { dialog = null }) { Text(stringResource(R.string.dialog_cancel)) } },
         )
@@ -201,6 +250,35 @@ fun FavoritesScreen(
             onAdd = { viewModel.addCustomStation(it); dialog = null },
         )
         null -> {}
+    }
+}
+
+@Composable
+private fun SortMenu(current: FavSort, onSelect: (FavSort) -> Unit) {
+    var open by remember { mutableStateOf(false) }
+    val label = when (current) {
+        FavSort.CUSTOM -> R.string.fav_sort_custom
+        FavSort.NAME -> R.string.fav_sort_name
+        FavSort.RECENT -> R.string.fav_sort_recent
+    }
+    Box {
+        TextButton(onClick = { open = true }) {
+            Icon(Icons.AutoMirrored.Filled.Sort, null, modifier = Modifier.size(18.dp))
+            Text(stringResource(label), maxLines = 1)
+        }
+        DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+            listOf(FavSort.CUSTOM, FavSort.NAME, FavSort.RECENT).forEach { item ->
+                val title = when (item) {
+                    FavSort.CUSTOM -> R.string.fav_sort_custom
+                    FavSort.NAME -> R.string.fav_sort_name
+                    FavSort.RECENT -> R.string.fav_sort_recent
+                }
+                DropdownMenuItem(
+                    text = { Text(stringResource(title)) },
+                    onClick = { onSelect(item); open = false },
+                )
+            }
+        }
     }
 }
 
@@ -236,21 +314,24 @@ private fun SubHeader(text: String) {
     )
 }
 
-/** Обложка папки: мозаика 2×2 из логотипов (как плейлист Spotify), один логотип или значок папки. */
+/** Обложка папки: свой снимок, мозаика 2×2, один логотип или значок папки. */
 @Composable
-private fun FolderCover(folder: Folder, size: Dp) {
+internal fun FolderCover(folder: Folder, size: Dp, modifier: Modifier = Modifier) {
     val palette = LocalPalette.current
     val shape = RoundedCornerShape(10.dp)
     val logos = folder.stations.map { it.faviconUrl }
     when {
-        logos.size >= 4 -> Column(Modifier.size(size).clip(shape)) {
+        !folder.coverPath.isNullOrBlank() -> StationImage(
+            model = "file://${folder.coverPath}", size = size, shape = shape, modifier = modifier,
+        )
+        logos.size >= 4 -> Column(modifier.size(size).clip(shape)) {
             logos.take(4).chunked(2).forEach { row ->
                 Row { row.forEach { StationImage(model = it, size = size / 2, shape = RoundedCornerShape(0.dp)) } }
             }
         }
-        logos.isNotEmpty() -> StationImage(model = logos.first(), size = size, shape = shape)
+        logos.isNotEmpty() -> StationImage(model = logos.first(), size = size, shape = shape, modifier = modifier)
         else -> Box(
-            Modifier.size(size).clip(shape)
+            modifier.size(size).clip(shape)
                 .background(Brush.linearGradient(listOf(lerp(palette.primary, Color.Black, 0.35f), palette.primary))),
             contentAlignment = Alignment.Center,
         ) {
@@ -260,21 +341,26 @@ private fun FolderCover(folder: Folder, size: Dp) {
 }
 
 @Composable
-private fun FolderRow(folder: Folder, onClick: () -> Unit) {
+private fun FolderRow(
+    folder: Folder,
+    onClick: () -> Unit,
+    highlighted: Boolean = false,
+    modifier: Modifier = Modifier,
+) {
     val palette = LocalPalette.current
     Row(
-        Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier.fillMaxWidth()
+            .then(if (highlighted) Modifier.border(2.dp, palette.primary, RoundedCornerShape(12.dp)) else Modifier)
+            .clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         FolderCover(folder, 56.dp)
         Column(Modifier.weight(1f).padding(horizontal = 12.dp)) {
             Text(folder.name, color = palette.text, fontSize = 16.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(
-                stringResource(
-                    R.string.fav_folder_label,
-                    stationsCount(folder.stations.size),
-                ),
-                color = palette.textMuted, fontSize = 13.sp,
+                if (highlighted) stringResource(R.string.fav_drop_hint)
+                else stringResource(R.string.fav_folder_label, stationsCount(folder.stations.size)),
+                color = if (highlighted) palette.primary else palette.textMuted, fontSize = 13.sp,
             )
         }
         Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null, tint = palette.textMuted)
@@ -311,11 +397,12 @@ private fun FavoriteRow(
     onRemoveFavorite: () -> Unit,
     onRemoveFromFolder: (() -> Unit)? = null,
     isCurrent: Boolean = false,
+    modifier: Modifier = Modifier,
 ) {
     val palette = LocalPalette.current
     var menu by remember { mutableStateOf(false) }
     Row(
-        Modifier.fillMaxWidth().clickable(onClick = onPlay).padding(start = 16.dp, end = 4.dp, top = 6.dp, bottom = 6.dp),
+        modifier.fillMaxWidth().clickable(onClick = onPlay).padding(start = 16.dp, end = 4.dp, top = 6.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         StationImage(model = station.faviconUrl, size = 52.dp, shape = RoundedCornerShape(10.dp))
@@ -375,7 +462,7 @@ private fun FolderMenu(onRename: () -> Unit, onDelete: () -> Unit) {
 }
 
 @Composable
-private fun NameDialog(
+internal fun NameDialog(
     title: String,
     initial: String,
     confirm: String,
@@ -401,7 +488,7 @@ private fun NameDialog(
 
 /** Выбор папок для станции галочками; можно сразу создать новую (станция попадёт в неё). */
 @Composable
-private fun PickFoldersDialog(
+internal fun PickFoldersDialog(
     station: Station,
     folders: List<Folder>,
     onDismiss: () -> Unit,

@@ -146,7 +146,23 @@
     <string name="folder_name_hint">Название папки</string>
     <string name="folder_pick_title">Папки для станции</string>
     <string name="folder_pick_empty">Папок пока нет — создайте первую.</string>
-    <string name="folder_empty">В папке пока пусто. Добавьте станции через ⋮ в списке избранного.</string>
+    <string name="fav_sort_custom">Свой порядок</string>
+    <string name="fav_sort_name">По названию</string>
+    <string name="fav_sort_recent">Недавно добавленные</string>
+    <string name="fav_search_hint">Поиск в избранном</string>
+    <string name="fav_drop_hint">Отпустите, чтобы добавить в папку</string>
+    <string name="fav_added_to_folder">Добавлено в «%1$s»</string>
+    <string name="folder_empty">Здесь пока пусто</string>
+    <string name="folder_add_stations">Добавить станции</string>
+    <string name="folder_share">Поделиться</string>
+    <string name="folder_shuffle">Перемешать</string>
+    <string name="folder_play">Слушать</string>
+    <string name="folder_change_cover">Сменить обложку</string>
+    <string name="folder_reset_cover">Вернуть коллаж</string>
+    <string name="folder_move_to">В другую папку</string>
+    <string name="cover_crop_title">Обложка папки</string>
+    <string name="cover_crop_hint">Двигайте и увеличивайте пальцами</string>
+    <string name="cover_crop_done">Готово</string>
     <string name="dialog_create">Создать</string>
     <string name="dialog_save">Сохранить</string>
     <string name="dialog_cancel">Отмена</string>
@@ -222,4 +238,12 @@
     <string name="mood_instrumental">Инструментал</string>
     <string name="mood_sleep">Перед сном</string>
     <string name="mood_chill">Чилл</string>
+    <string name="station_prev">Предыдущая станция</string>
+    <string name="station_next">Следующая станция</string>
+    <string name="player_from_folder">Из папки</string>
+    <string name="player_from_favorites">Из избранного</string>
+    <string name="player_from_search">Поиск</string>
+    <string name="player_from_genre">Жанр</string>
+    <string name="player_from_collection">Из подборки</string>
+    <string name="player_from_history">Из истории</string>
 </resources>

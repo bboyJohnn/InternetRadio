@@ -146,7 +146,23 @@
     <string name="folder_name_hint">Folder name</string>
     <string name="folder_pick_title">Folders for the station</string>
     <string name="folder_pick_empty">No folders yet — create the first one.</string>
-    <string name="folder_empty">This folder is empty. Add stations via ⋮ in the favorites list.</string>
+    <string name="fav_sort_custom">Custom order</string>
+    <string name="fav_sort_name">By name</string>
+    <string name="fav_sort_recent">Recently added</string>
+    <string name="fav_search_hint">Search favorites</string>
+    <string name="fav_drop_hint">Drop to add to this folder</string>
+    <string name="fav_added_to_folder">Added to “%1$s”</string>
+    <string name="folder_empty">Nothing here yet</string>
+    <string name="folder_add_stations">Add stations</string>
+    <string name="folder_share">Share</string>
+    <string name="folder_shuffle">Shuffle</string>
+    <string name="folder_play">Listen</string>
+    <string name="folder_change_cover">Change cover</string>
+    <string name="folder_reset_cover">Restore collage</string>
+    <string name="folder_move_to">Move to another folder</string>
+    <string name="cover_crop_title">Folder cover</string>
+    <string name="cover_crop_hint">Drag and pinch to zoom</string>
+    <string name="cover_crop_done">Done</string>
     <string name="dialog_create">Create</string>
     <string name="dialog_save">Save</string>
     <string name="dialog_cancel">Cancel</string>
@@ -220,4 +236,12 @@
     <string name="mood_instrumental">Instrumental</string>
     <string name="mood_sleep">Sleep</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Previous station</string>
+    <string name="station_next">Next station</string>
+    <string name="player_from_folder">From folder</string>
+    <string name="player_from_favorites">From favorites</string>
+    <string name="player_from_search">Search</string>
+    <string name="player_from_genre">Genre</string>
+    <string name="player_from_collection">From the collection</string>
+    <string name="player_from_history">From history</string>
 </resources>

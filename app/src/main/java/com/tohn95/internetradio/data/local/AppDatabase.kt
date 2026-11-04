@@ -7,7 +7,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [StationEntity::class, FolderEntity::class, FolderStationEntity::class],
-    version = 3,
+    version = 4,
     exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -37,6 +37,49 @@ abstract class AppDatabase : RoomDatabase() {
                         "ON UPDATE NO ACTION ON DELETE CASCADE )"
                 )
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_folder_stations_stationUuid` ON `folder_stations` (`stationUuid`)")
+            }
+        }
+
+        /** 3→4: сохраняем прежние порядки, добавляем пользовательские позиции и обложки. */
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE stations ADD COLUMN favPosition INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE stations ADD COLUMN favoritedAt INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE folders ADD COLUMN position INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE folders ADD COLUMN coverPath TEXT")
+                db.execSQL("ALTER TABLE folder_stations ADD COLUMN position INTEGER NOT NULL DEFAULT 0")
+
+                var position = 0
+                db.query("SELECT uuid FROM stations WHERE isFavorite = 1 ORDER BY name").use { cursor ->
+                    while (cursor.moveToNext()) {
+                        db.execSQL(
+                            "UPDATE stations SET favPosition = ?, favoritedAt = ? WHERE uuid = ?",
+                            arrayOf(position, position.toLong(), cursor.getString(0)),
+                        )
+                        position++
+                    }
+                }
+
+                val folderIds = mutableListOf<Long>()
+                db.query("SELECT id FROM folders ORDER BY createdAt").use { cursor ->
+                    while (cursor.moveToNext()) folderIds += cursor.getLong(0)
+                }
+                folderIds.forEachIndexed { index, id ->
+                    db.execSQL("UPDATE folders SET position = ? WHERE id = ?", arrayOf<Any>(index, id))
+                    var stationPosition = 0
+                    db.query(
+                        "SELECT stationUuid FROM folder_stations WHERE folderId = ? ORDER BY addedAt DESC",
+                        arrayOf(id),
+                    ).use { cursor ->
+                        while (cursor.moveToNext()) {
+                            db.execSQL(
+                                "UPDATE folder_stations SET position = ? WHERE folderId = ? AND stationUuid = ?",
+                                arrayOf(stationPosition, id, cursor.getString(0)),
+                            )
+                            stationPosition++
+                        }
+                    }
+                }
             }
         }
     }

@@ -146,7 +146,23 @@
     <string name="folder_name_hint">Ordnername</string>
     <string name="folder_pick_title">Ordner für den Sender</string>
     <string name="folder_pick_empty">Noch keine Ordner – erstelle den ersten.</string>
-    <string name="folder_empty">Der Ordner ist noch leer. Füge Sender über ⋮ in der Favoritenliste hinzu.</string>
+    <string name="fav_sort_custom">Eigene Reihenfolge</string>
+    <string name="fav_sort_name">Nach Name</string>
+    <string name="fav_sort_recent">Zuletzt hinzugefügt</string>
+    <string name="fav_search_hint">Favoriten durchsuchen</string>
+    <string name="fav_drop_hint">Zum Hinzufügen hier loslassen</string>
+    <string name="fav_added_to_folder">Zu „%1$s“ hinzugefügt</string>
+    <string name="folder_empty">Hier ist noch nichts</string>
+    <string name="folder_add_stations">Sender hinzufügen</string>
+    <string name="folder_share">Teilen</string>
+    <string name="folder_shuffle">Zufallswiedergabe</string>
+    <string name="folder_play">Anhören</string>
+    <string name="folder_change_cover">Cover ändern</string>
+    <string name="folder_reset_cover">Collage wiederherstellen</string>
+    <string name="folder_move_to">In anderen Ordner verschieben</string>
+    <string name="cover_crop_title">Ordner-Cover</string>
+    <string name="cover_crop_hint">Ziehen und mit zwei Fingern zoomen</string>
+    <string name="cover_crop_done">Fertig</string>
     <string name="dialog_create">Erstellen</string>
     <string name="dialog_save">Speichern</string>
     <string name="dialog_cancel">Abbrechen</string>
@@ -220,4 +236,12 @@
     <string name="mood_instrumental">Instrumental</string>
     <string name="mood_sleep">Zum Einschlafen</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Vorheriger Sender</string>
+    <string name="station_next">Nächster Sender</string>
+    <string name="player_from_folder">Aus Ordner</string>
+    <string name="player_from_favorites">Aus Favoriten</string>
+    <string name="player_from_search">Suche</string>
+    <string name="player_from_genre">Genre</string>
+    <string name="player_from_collection">Aus der Sammlung</string>
+    <string name="player_from_history">Aus dem Verlauf</string>
 </resources>

@@ -26,6 +26,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tohn95.internetradio.R
 import com.tohn95.internetradio.playback.PlayerController
+import com.tohn95.internetradio.playback.PlayQueue
+import com.tohn95.internetradio.playback.PlaySource
 import com.tohn95.internetradio.ui.components.LocalBottomBarInset
 import com.tohn95.internetradio.ui.components.SearchField
 import com.tohn95.internetradio.ui.components.StationCard
@@ -80,6 +82,8 @@ fun HistoryScreen(
             return@Column
         }
         val sections = groupByDay(shown, LocalDate.now(zone), zone)
+        // ⏮ ⏭ из Истории — по тому, что видно на экране, сверху вниз.
+        val queueStations = sections.flatMap { s -> s.entries.map { it.station } }
         LazyColumn(
             Modifier.fillMaxSize(),
             contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 4.dp, bottom = 12.dp + LocalBottomBarInset.current),
@@ -99,7 +103,7 @@ fun HistoryScreen(
                 }
                 items(section.entries, key = { it.station.uuid }) { e ->
                     StationCard(
-                        e.station, onClick = { playerController?.play(e.station) },
+                        e.station, onClick = { playerController?.play(e.station, PlayQueue(PlaySource.History, queueStations)) },
                         isCurrent = e.station.uuid == currentUuid,
                     )
                 }

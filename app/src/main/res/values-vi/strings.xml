@@ -146,7 +146,23 @@
     <string name="folder_name_hint">Tên thư mục</string>
     <string name="folder_pick_title">Thư mục cho đài</string>
     <string name="folder_pick_empty">Chưa có thư mục nào — hãy tạo thư mục đầu tiên.</string>
-    <string name="folder_empty">Thư mục đang trống. Thêm đài qua ⋮ trong danh sách yêu thích.</string>
+    <string name="fav_sort_custom">Thứ tự tùy chỉnh</string>
+    <string name="fav_sort_name">Theo tên</string>
+    <string name="fav_sort_recent">Thêm gần đây</string>
+    <string name="fav_search_hint">Tìm trong mục yêu thích</string>
+    <string name="fav_drop_hint">Thả để thêm vào thư mục này</string>
+    <string name="fav_added_to_folder">Đã thêm vào “%1$s”</string>
+    <string name="folder_empty">Chưa có gì ở đây</string>
+    <string name="folder_add_stations">Thêm đài</string>
+    <string name="folder_share">Chia sẻ</string>
+    <string name="folder_shuffle">Phát ngẫu nhiên</string>
+    <string name="folder_play">Nghe</string>
+    <string name="folder_change_cover">Đổi ảnh bìa</string>
+    <string name="folder_reset_cover">Khôi phục ảnh ghép</string>
+    <string name="folder_move_to">Chuyển sang thư mục khác</string>
+    <string name="cover_crop_title">Ảnh bìa thư mục</string>
+    <string name="cover_crop_hint">Kéo và chụm để phóng to</string>
+    <string name="cover_crop_done">Xong</string>
     <string name="dialog_create">Tạo</string>
     <string name="dialog_save">Lưu</string>
     <string name="dialog_cancel">Hủy</string>
@@ -219,4 +235,12 @@
     <string name="mood_instrumental">Không lời</string>
     <string name="mood_sleep">Trước khi ngủ</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Đài trước</string>
+    <string name="station_next">Đài tiếp theo</string>
+    <string name="player_from_folder">Từ thư mục</string>
+    <string name="player_from_favorites">Từ mục yêu thích</string>
+    <string name="player_from_search">Tìm kiếm</string>
+    <string name="player_from_genre">Thể loại</string>
+    <string name="player_from_collection">Từ bộ sưu tập</string>
+    <string name="player_from_history">Từ lịch sử</string>
 </resources>

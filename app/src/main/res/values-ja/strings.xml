@@ -146,7 +146,23 @@
     <string name="folder_name_hint">フォルダ名</string>
     <string name="folder_pick_title">局のフォルダ</string>
     <string name="folder_pick_empty">フォルダはまだありません。最初のフォルダを作成しましょう。</string>
-    <string name="folder_empty">フォルダは空です。お気に入りリストの ⋮ から局を追加してください。</string>
+    <string name="fav_sort_custom">カスタム順</string>
+    <string name="fav_sort_name">名前順</string>
+    <string name="fav_sort_recent">最近追加した順</string>
+    <string name="fav_search_hint">お気に入りを検索</string>
+    <string name="fav_drop_hint">ここで離すとフォルダに追加します</string>
+    <string name="fav_added_to_folder">「%1$s」に追加しました</string>
+    <string name="folder_empty">ここにはまだ何もありません</string>
+    <string name="folder_add_stations">局を追加</string>
+    <string name="folder_share">共有</string>
+    <string name="folder_shuffle">シャッフル</string>
+    <string name="folder_play">聴く</string>
+    <string name="folder_change_cover">カバーを変更</string>
+    <string name="folder_reset_cover">コラージュに戻す</string>
+    <string name="folder_move_to">別のフォルダへ移動</string>
+    <string name="cover_crop_title">フォルダのカバー</string>
+    <string name="cover_crop_hint">ドラッグやピンチで調整</string>
+    <string name="cover_crop_done">完了</string>
     <string name="dialog_create">作成</string>
     <string name="dialog_save">保存</string>
     <string name="dialog_cancel">キャンセル</string>
@@ -219,4 +235,12 @@
     <string name="mood_instrumental">インスト</string>
     <string name="mood_sleep">おやすみ前に</string>
     <string name="mood_chill">チル</string>
+    <string name="station_prev">前の局</string>
+    <string name="station_next">次の局</string>
+    <string name="player_from_folder">フォルダから</string>
+    <string name="player_from_favorites">お気に入りから</string>
+    <string name="player_from_search">検索</string>
+    <string name="player_from_genre">ジャンル</string>
+    <string name="player_from_collection">コレクションから</string>
+    <string name="player_from_history">履歴から</string>
 </resources>

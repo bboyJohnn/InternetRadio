@@ -146,7 +146,23 @@
     <string name="folder_name_hint">Nama folder</string>
     <string name="folder_pick_title">Folder untuk stasiun</string>
     <string name="folder_pick_empty">Belum ada folder — buat yang pertama.</string>
-    <string name="folder_empty">Folder masih kosong. Tambahkan stasiun lewat ⋮ di daftar favorit.</string>
+    <string name="fav_sort_custom">Urutan kustom</string>
+    <string name="fav_sort_name">Berdasarkan nama</string>
+    <string name="fav_sort_recent">Baru ditambahkan</string>
+    <string name="fav_search_hint">Cari di favorit</string>
+    <string name="fav_drop_hint">Lepaskan untuk menambahkan ke folder ini</string>
+    <string name="fav_added_to_folder">Ditambahkan ke “%1$s”</string>
+    <string name="folder_empty">Belum ada apa-apa di sini</string>
+    <string name="folder_add_stations">Tambah stasiun</string>
+    <string name="folder_share">Bagikan</string>
+    <string name="folder_shuffle">Acak</string>
+    <string name="folder_play">Dengarkan</string>
+    <string name="folder_change_cover">Ganti sampul</string>
+    <string name="folder_reset_cover">Pulihkan kolase</string>
+    <string name="folder_move_to">Pindahkan ke folder lain</string>
+    <string name="cover_crop_title">Sampul folder</string>
+    <string name="cover_crop_hint">Geser dan cubit untuk memperbesar</string>
+    <string name="cover_crop_done">Selesai</string>
     <string name="dialog_create">Buat</string>
     <string name="dialog_save">Simpan</string>
     <string name="dialog_cancel">Batal</string>
@@ -219,4 +235,12 @@
     <string name="mood_instrumental">Instrumental</string>
     <string name="mood_sleep">Pengantar tidur</string>
     <string name="mood_chill">Chill</string>
+    <string name="station_prev">Stasiun sebelumnya</string>
+    <string name="station_next">Stasiun berikutnya</string>
+    <string name="player_from_folder">Dari folder</string>
+    <string name="player_from_favorites">Dari favorit</string>
+    <string name="player_from_search">Pencarian</string>
+    <string name="player_from_genre">Genre</string>
+    <string name="player_from_collection">Dari koleksi</string>
+    <string name="player_from_history">Dari riwayat</string>
 </resources>

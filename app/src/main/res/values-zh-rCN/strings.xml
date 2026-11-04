@@ -146,7 +146,23 @@
     <string name="folder_name_hint">文件夹名称</string>
     <string name="folder_pick_title">电台所在文件夹</string>
     <string name="folder_pick_empty">还没有文件夹——创建第一个吧。</string>
-    <string name="folder_empty">文件夹是空的。可在收藏列表中通过 ⋮ 添加电台。</string>
+    <string name="fav_sort_custom">自定义顺序</string>
+    <string name="fav_sort_name">按名称</string>
+    <string name="fav_sort_recent">最近添加</string>
+    <string name="fav_search_hint">搜索收藏</string>
+    <string name="fav_drop_hint">松开以添加到此文件夹</string>
+    <string name="fav_added_to_folder">已添加到“%1$s”</string>
+    <string name="folder_empty">这里还没有内容</string>
+    <string name="folder_add_stations">添加电台</string>
+    <string name="folder_share">分享</string>
+    <string name="folder_shuffle">随机播放</string>
+    <string name="folder_play">收听</string>
+    <string name="folder_change_cover">更换封面</string>
+    <string name="folder_reset_cover">恢复拼贴</string>
+    <string name="folder_move_to">移到其他文件夹</string>
+    <string name="cover_crop_title">文件夹封面</string>
+    <string name="cover_crop_hint">拖动并用双指缩放</string>
+    <string name="cover_crop_done">完成</string>
     <string name="dialog_create">创建</string>
     <string name="dialog_save">保存</string>
     <string name="dialog_cancel">取消</string>
@@ -219,4 +235,12 @@
     <string name="mood_instrumental">纯音乐</string>
     <string name="mood_sleep">睡前</string>
     <string name="mood_chill">惬意</string>
+    <string name="station_prev">上一个电台</string>
+    <string name="station_next">下一个电台</string>
+    <string name="player_from_folder">来自文件夹</string>
+    <string name="player_from_favorites">来自收藏</string>
+    <string name="player_from_search">搜索</string>
+    <string name="player_from_genre">类型</string>
+    <string name="player_from_collection">来自精选</string>
+    <string name="player_from_history">来自历史记录</string>
 </resources>
